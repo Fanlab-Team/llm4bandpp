@@ -1,0 +1,55 @@
+name: Reproduction problem
+description: A table, figure or number does not come out as in the paper, or a command fails.
+title: "[Reproduction] "
+labels: ["reproduction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for trying to reproduce the paper. The more of the fields below you fill in, the faster we can help.
+        Most differences come from library versions: tables should be byte-identical with any version, while figures
+        can differ in a few pixels unless the versions of `requirements-level1.txt` are installed.
+  - type: dropdown
+    id: level
+    attributes:
+      label: Level
+      description: Which level of README.md were you running?
+      options:
+        - "Level 1: regenerate tables and figures (reproduce/verify_level1.py)"
+        - "Level 2: recompute numbers (reproduce/run_level2.sh)"
+        - "Level 3: rerun an experiment"
+        - "Installation or setup"
+    validations:
+      required: true
+  - type: input
+    id: item
+    attributes:
+      label: Paper item
+      description: The table, figure, section or number concerned, if any.
+      placeholder: e.g. Table I, Fig. 4(a), the 16.3% of Section V-B
+  - type: textarea
+    id: command
+    attributes:
+      label: Command
+      description: The exact command you ran, from the package root.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output
+      description: What it printed, at least the last 30 lines. For level 1, the match table and any .diff file it names.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: |
+        Operating system, Python version and library versions, for example the output of
+        `python3 --version; python3 -m pip freeze | grep -iE "numpy|matplotlib|scipy|pillow|torch|onnxruntime"; pdflatex --version | head -1`
+      render: text
+    validations:
+      required: true

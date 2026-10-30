@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Where a number of the paper comes from
+    url: https://github.com/Fanlab-Team/llm4bandpp/blob/main/docs/RESULTS_INDEX.md
+    about: For every table, figure and number, the registry entry and the command that regenerates or recomputes it.
+  - name: How to run the package
+    url: https://github.com/Fanlab-Team/llm4bandpp/blob/main/docs/PACKAGE.md
+    about: The three reproduction levels, the hardware and time they need, and what is not included.

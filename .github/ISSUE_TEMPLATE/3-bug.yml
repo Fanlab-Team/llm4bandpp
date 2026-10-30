@@ -1,0 +1,33 @@
+name: Bug in the code
+description: A script crashes or computes something wrong, independent of reproducing a particular result.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: input
+    id: file
+    attributes:
+      label: File
+      description: The script or module, relative to the package root.
+      placeholder: e.g. scripts/paper/make_tables_v2.py
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happens, and what you expected
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How to trigger it
+      description: The smallest command or input that shows the problem, and its output.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system, Python version and the versions of the libraries involved.
+      render: text

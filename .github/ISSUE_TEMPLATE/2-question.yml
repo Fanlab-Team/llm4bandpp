@@ -1,0 +1,22 @@
+name: Question about the paper or the results
+description: Ask about a method, a number, an experiment or a term.
+title: "[Question] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Many answers are already written down: `docs/RESULTS_INDEX.md` traces every number of the paper to its
+        experiment and command, and `docs/GLOSSARY.md` maps file names and labels to the paper's terms.
+  - type: input
+    id: item
+    attributes:
+      label: Paper item
+      description: The section, table, figure or number your question is about.
+      placeholder: e.g. Section V-E, Table IV, the balanced accuracy of 0.92
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+    validations:
+      required: true
