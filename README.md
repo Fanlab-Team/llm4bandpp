@@ -14,43 +14,48 @@ C-H is the deployed estimator (conference encoder trained with the HCQ reward, n
 in the testbed, and `llm4bandpp` or "LLM4band++ (Qwen)" in file names is the paper's one-token LLM variant, not the
 deployed system.
 
-<p align="center"><img src="docs/figures/fig_llm_position.png" width="520" alt="LLM4band++ overview: once per client stack an LLM designer writes an adapter; every 60 ms the adapter fills the features of an offline RL estimator that runs without an LLM behind a probing envelope"></p>
+<p align="center"><img src="docs/figures/fig_llm_position.png" width="440" alt="Fig. 2: overview of LLM4band++. Offline, the estimator is trained with IQL, the HCQ reward and a capacity anchor; once per client stack an LLM designer writes the telemetry adapter; every 60 ms the estimator runs without an LLM behind a probing envelope">&nbsp;&nbsp;<img src="docs/figures/fig_envelope.png" width="400" alt="Fig. 3: the probing envelope's three states, Clear, Mild and Congested, with their probe rules and who leads the announced rate"></p>
 
-*Fig. 1. Once per client stack, the LLM designer reads the telemetry documentation and writes an adapter (shown: its
-output for the SRT library), which code runs every 60 ms to fill the estimator's 15 features or mark them missing. The
-estimator, trained offline, runs without an LLM behind a probing envelope.*
+*Left, Fig. 2: overview of LLM4band++. The LLM designer runs once per client stack, and the estimator runs every 60 ms
+without an LLM. Right, Fig. 3: the probing envelope of the deployed system, with its three states.*
 
 ## Results at a glance
 
+<p align="center"><img src="docs/figures/fig_teaser.png" width="460" alt="Fig. 1: offline error (macro MSE) against model size of the offline RL estimators on 870 validation calls; LLM4band++ has the lowest error with 0.68 M parameters"></p>
+
+*Fig. 1. Offline error (macro-averaged MSE) against model size of the offline RL estimators on 870 validation calls.
+Lower left is better.*
+
 | Result | Paper |
 |---|---|
-| The deployed estimator has a macro MSE of 5.80 on the 870 validation calls, 16.3% below LLM4Band (95% interval 13.4% to 19.4%). | Table I |
-| It decides in 0.07 ms on a laptop CPU with 0.68 M parameters. An LLM in the per-step path costs at least 39 ms per decision and adds no detectable accuracy. | Tables II, III |
-| Asked for units and counting rules, the LLM designer reaches a balanced accuracy of 0.92 on 12 held-out client stacks, against 0.56 for the best non-LLM matcher (Cupid) and 0.72 for the same LLM used as a generic matcher. | Fig. 3(a), Table IV |
-| At 720p the deployed system has higher VMAF than a Python GCC in every batch, by 4.3 to 8.9 on average; most of the lead comes while GCC ramps up, and after 30 s the difference is −0.5 to +2.1 VMAF. | Table V, Fig. 4 |
+| The deployed estimator has a macro MSE of 5.80 on the 870 validation calls, 16.3% below LLM4Band (95% interval 13.4% to 19.4%). | Fig. 1, Table I |
+| It decides in 0.07 ms on a laptop CPU with 0.68 M parameters. An LLM in the per-step path takes 32 to 39 ms per decision (median) and adds no detectable accuracy. | Tables II, III |
+| Asked for units and counting rules, the LLM designer reaches a balanced accuracy of 0.92 on 12 held-out client stacks, against 0.56 for the best non-LLM matcher (Cupid) and 0.72 for the same LLM used as a generic matcher. | Fig. 4(a), Table IV |
+| At 720p the deployed system has higher VMAF than a Python GCC in every batch, by 4.3 to 8.9 on average; most of the lead comes while GCC ramps up, and after 30 s the difference is −0.5 to +2.1 VMAF. | Table V, Fig. 5 |
 
 Where the estimator reads only adapted telemetry, the gains are large but uneven (Section V-E). The registry lists
 every test with its verdict, including those that fell short, and
 [`docs/RESULTS_INDEX.md`](docs/RESULTS_INDEX.md) gives the command that recomputes each number.
 
-<p align="center"><img src="docs/figures/fig_designer_three.png" width="860" alt="Fig. 3: balanced accuracy of the designer and the schema matchers, end-to-end correctness on real software, and closed-loop utility relative to the true mapping"></p>
+<p align="center"><img src="docs/figures/fig_designer_three.png" width="860" alt="Fig. 4: balanced accuracy of the designer and the schema matchers on 12 client stacks, end-to-end correctness on real software, and closed-loop utility relative to the true mapping on synthetic schemas"></p>
 
-*Fig. 3. (a) Balanced accuracy on 12 held-out client stacks; hatched bars are non-LLM matchers. (b) 42 feature-run cells
-checked against packet captures of four real programs. (c) Closed loop on synthetic schemas: utility relative to the true
-mapping; dashed, a 10-point loss.*
+*Fig. 4. The designer against conventional matchers (hatched): (a) 12 held-out client stacks, (b) four real programs,
+(c) closed loop on synthetic schemas. Hollow: open models.*
 
-<p align="center"><img src="docs/figures/fig_closedloop_dynamics.png" width="860" alt="Fig. 4: VMAF over call time against the Python GCC, rates in one cellular call, and utility against LLM4Band at low capacities"></p>
+<p align="center"><img src="docs/figures/fig_closedloop_dynamics.png" width="860" alt="Fig. 5: VMAF over call time against the Python GCC, rates in one cellular call, and utility against LLM4Band at 320x240"></p>
 
-*Fig. 4. (a) VMAF over call time in the first 720p batch, against the Python GCC. (b) Our median-VMAF cellular call;
-after congestion the announced rate follows the shadow GCC. (c) Utility against LLM4Band at 100 to 400 kb/s, 320×240,
-with 90% intervals; dashed, the non-inferiority margin.*
+*Fig. 5. Closed-loop behavior: (a) VMAF over call time, first 720p batch, (b) one cellular call, (c) utility per
+capacity, mean with 90% interval.*
 
-The figures here are renderings of the reference PDFs in `expected/figs/`, which `reproduce/verify_level1.py` regenerates.
+The figures here are renderings of the paper's PDFs. Figs. 2 and 3 are rebuilt pixel for pixel by
+`reproduce/verify_level1.py`; Figs. 1, 4 and 5 were drawn by a co-author from the data in
+[`figures_and_tables/`](figures_and_tables/), where each folder names its source.
 
 ## Getting started (about 15 minutes)
 
-You need Linux x86-64, Python 3.13 and TeX Live with `pdflatex` and the packages `helvet`, `sansmath` and TikZ (for
-Figs. 1 to 3). We tested on Ubuntu 26.04 with Python 3.13.13 and TeX Live 2026. From the package root:
+You need Linux x86-64, Python 3.13, TeX Live with `pdflatex`, `xelatex` and the packages `helvet`, `sansmath`,
+`fontspec` and TikZ, and the Arial and Times New Roman fonts (for Figs. 2, 3 and S1). We tested on Ubuntu 26.04 with
+Python 3.13.13 and TeX Live 2026. From the package root:
 
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
@@ -63,7 +68,7 @@ bash reproduce/run_level2.sh --only main-table,flops   # recomputes Table I and 
 The last lines should read:
 
 ```
-16 of 16 outputs identical to the paper, 0 not, 0 skipped; 0 of 8 commands failed
+15 of 15 outputs identical to the reference, 0 not, 0 skipped; 0 of 7 commands failed
 2 of 2 checks reproduced, 0 not, 0 skipped
 ```
 
@@ -87,9 +92,9 @@ the experiments and needs data, hardware or services from outside the package.
 | Offline accuracy, ablations, λ sweep (Tables I, S3, S4; Sections V-B, V-C, S4, S6; Fig. S1) | Yes | Yes | Re-evaluate the released checkpoints or retrain on a GPU, with the public challenge data |
 | Two LLM positions (Table II, Section V-D) | Yes | Yes | Designer: an API key or two GPUs. Per step: no, the LLM-variant checkpoints are not included |
 | Cost per decision (Table III) | Yes | Yes | The latency script on your hardware |
-| Deployment-time designer (Table IV, Fig. 3, Sections V-E, S8) | Yes | Yes | An API key or two GPUs; real client software for the capture tests; the testbed for the closed-loop rows |
-| Closed loop (Table V, Fig. 4, Sections V-F, S7) | Yes | Yes | An AlphaRTC testbed; the Dockerfile is a draft we have not built |
-| Collector corrections (Section III-E, Table S1) | By hand | Partly | No: those batches' logs and run scripts are not included |
+| Deployment-time designer (Table IV, Fig. 4, Sections V-E, S8) | Yes | Yes | An API key or two GPUs; real client software for the capture tests; the testbed for the closed-loop rows |
+| Closed loop (Table V, Fig. 5, Sections V-F, S7) | Yes | Yes | An AlphaRTC testbed; the Dockerfile is a draft we have not built |
+| Collector corrections (Section III-D, Table S1) | By hand | Partly | No: those batches' logs and run scripts are not included |
 
 [`docs/PACKAGE.md`](docs/PACKAGE.md) gives the full version of this table with every exception, the hardware and time
 per level, the level-1 commands run by hand, and what counts as reproduced at each level.

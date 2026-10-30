@@ -1,0 +1,92 @@
+\documentclass[tikz,border=1pt]{standalone}
+\usepackage{fontspec}
+\setmainfont{Arial}
+\usepackage{graphicx}
+\usetikzlibrary{arrows.meta,calc}
+\definecolor{edge}{HTML}{1F3864}\definecolor{fnF}{HTML}{FBE5D6}\definecolor{poF}{HTML}{EAF2FB}\definecolor{llmF}{HTML}{E2F0D9}
+\definecolor{bufF}{HTML}{E7E6E6}\definecolor{ink}{HTML}{262626}\definecolor{dashC}{HTML}{404040}
+\newcommand{\sm}{\fontsize{7}{8.2}\selectfont}
+\newcommand{\ic}[2]{\includegraphics[height=#1cm]{icons/#2}}
+\newcommand{\circled}[1]{\tikz[baseline=(c.base)]\node[circle, draw=ink, line width=0.4pt, inner sep=0.4pt, minimum size=8pt, font=\fontsize{6}{7}\selectfont] (c) {#1};}
+
+\newcommand{\bbx}[1]{\path (#1.south west); \pgfgetlastxy{\xa}{\ya}\path (#1.north east); \pgfgetlastxy{\xb}{\yb}}
+\newcommand{\repbox}[3]{\bbx{#1}\typeout{BOX #1\space\xa\space\ya\space\xb\space\yb}\typeout{WANT #1 #2 #3}}
+\newcommand{\reptxt}[1]{\bbx{#1}\typeout{TXT #1\space\xa\space\ya\space\xb\space\yb}}
+\newcommand{\repin}[2]{\typeout{IN #1 #2}}
+\newcommand{\reprule}[1]{\typeout{RULE #1}}
+\newcommand{\repcal}[1]{\path (#1); \pgfgetlastxy{\xa}{\ya}\typeout{CAL #1\space\xa\space\ya}\ifdefined\CALIB\fill[magenta] (#1) circle (1.2pt);\fi}
+\newcommand{\repbbox}{\path (current bounding box.south west); \pgfgetlastxy{\xa}{\ya}\path (current bounding box.north east); \pgfgetlastxy{\xb}{\yb}\typeout{BBOX \xa\space\ya\space\xb\space\yb}}
+
+\pgfdeclarelayer{background}\pgfsetlayers{background,main}
+\definecolor{bandF}{HTML}{F5F7FA}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, font=\footnotesize,
+  flow/.style={-{Latex[length=3pt,width=2.6pt]}, line width=0.55pt, draw=ink, shorten >=1.5pt, shorten <=1.5pt},
+  bx/.style={draw=edge, line width=0.6pt, align=center, inner sep=0pt, minimum height=0.5cm},
+  fn/.style={bx, fill=fnF}, po/.style={bx, fill=poF}, lm/.style={bx, fill=llmF},
+  grp/.style={draw=dashC, line width=0.55pt, dash pattern=on 2.5pt off 1.5pt},
+  bt/.style={anchor=north east, inner sep=0pt},
+  lab/.style={inner sep=0pt, font=\sm, align=center},
+]
+% ================= training (top band) =================
+\node[bt, font=\sm] (tA) at (8.75,6.5) {offline};
+\draw[grp] (2.95,2.92) rectangle (8.75,6.15);
+\node[inner sep=0pt] (lp) at (3.25,5.9) {\ic{0.3}{loop.pdf}};
+\node[lab, anchor=west] (tq) at (3.52,5.9) {Offline RL (IQL), HCQ reward};
+% (2) policy extraction
+\draw[grp] (3.28,3.0) rectangle (5.78,5.65);
+\node[lab, anchor=north west] (t2) at (3.38,5.56) {\circled{2}\ Policy extraction};
+\node[po, minimum width=2.3cm] (upd) at (4.53,4.75) {Update policy};
+\node[fn, minimum width=2.3cm] (anc) at (4.53,4.07) {Capacity anchor};
+\node[po, minimum width=2.3cm] (pol) at (4.53,3.39) {Policy network};
+% (1) network update
+\draw[grp] (5.98,3.0) rectangle (8.65,5.65);
+\node[lab, anchor=north west] (t1) at (6.08,5.56) {\circled{1}\ Network update};
+\node[fn, minimum width=2.45cm] (uv) at (7.315,4.75) {Update \textit{V}\textsubscript{\textit{ψ}}(\textit{s})};
+\node[fn, minimum width=2.45cm] (uq) at (7.315,4.07) {Update \textit{Q}\textsubscript{\textit{θ}}(\textit{s}, \textit{a})};
+\node[fn, minimum width=2.45cm] (ut) at (7.315,3.39) {Update target \textit{Q}};
+\draw[flow] (5.98,4.75) -- (upd.east);
+% data: traces and the replay buffer
+\node[inner sep=0pt] (trc) at (0.95,4.4) {\ic{0.55}{traces.pdf}};
+\node[lab, anchor=north] (ltrc) at (0.95,4.0) {RTC call\\[0pt]traces};
+\node[draw=edge, fill=bufF, line width=0.6pt, rounded corners=3pt, minimum width=0.82cm, minimum height=2.65cm, inner sep=0pt] (buf) at (2.15,4.325) {};
+\node[rotate=90, inner sep=0pt, align=center] (lbuf) at (2.15,4.325) {Balanced\\[-1pt]replay buffer};
+\draw[flow] (trc.east) -- (buf.west|-trc.east);
+\draw[flow] (buf.east|-trc.east) -- (2.95,4.4);
+
+% ================= design (middle band) =================
+\node[bt, font=\sm] (tB) at (8.75,2.56) {once per client stack};
+\def\yB{1.85}
+\node[lm, minimum width=1.9cm] (llm) at (2.605,\yB) {LLM designer};
+\draw[flow] (0.55,\yB) -- node[lab, above=2.5pt, pos=0.415] (ldoc) {telemetry\\[0pt]docs} (llm.west);
+\foreach \c/\t/\i/\x in {llmF/LLM/0/4.75,fnF/Function/1/5.95,poF/Policy/2/7.55}{
+  \filldraw[fill=\c, draw=edge, line width=0.5pt] (\x,\yB-0.11) rectangle ++(0.42,0.22);
+  \node[lab, anchor=west] (lg\i) at (\x+0.52,\yB) {\t};}
+
+% ================= online (bottom band) =================
+\node[bt, font=\sm] (tC) at (8.75,1.08) {every 60\,ms, no LLM};
+\def\yC{0.4}
+\node[fn, minimum width=1.35cm] (ad) at (2.605,\yC) {Adapter};
+\node[po, minimum width=1.6cm] (est) at (4.53,\yC) {Estimator};
+\node[fn, minimum width=2.4cm] (env) at (6.9,\yC) {Probing envelope};
+\draw[flow] (0.55,\yC) -- node[lab, above=2.5pt] (ltel) {telemetry} (ad.west);
+\draw[flow] (ad.east) -- (est.west);
+\draw[flow] (est.east) -- (env.west);
+\draw[flow] (env.east) -- node[lab, above=2.5pt, pos=0.62] (lrt) {rate} (8.75,\yC);
+% ================= links between bands =================
+\draw[flow] (llm.south) -- node[lab, right=2.5pt, pos=0.62] (lwr) {writes} (ad.north);
+\draw[flow] (pol.south) -- node[lab, left=2.5pt, pos=0.86] (lwt) {weights} (est.north);
+\begin{pgfonlayer}{background}\fill[bandF, rounded corners=4pt] (0,2.86) rectangle (8.75,6.62);\fill[bandF, rounded corners=4pt] (0,1.36) rectangle (8.75,2.72);\fill[bandF, rounded corners=4pt] (0,-0.08) rectangle (8.75,1.22);\end{pgfonlayer}
+% ================= layer names (left gutter) =================
+\node[rotate=90, inner sep=0pt, font=\footnotesize\bfseries] (gA) at (0.2,4.6) {Training};
+\node[rotate=90, inner sep=0pt, font=\footnotesize\bfseries] (gB) at (0.2,2.04) {Design};
+\node[rotate=90, inner sep=0pt, font=\footnotesize\bfseries] (gC) at (0.2,0.62) {Online};
+% ================= checks =================
+\repbox{upd}{2.3}{0.5}\repbox{anc}{2.3}{0.5}\repbox{pol}{2.3}{0.5}\repbox{uv}{2.45}{0.5}\repbox{uq}{2.45}{0.5}\repbox{ut}{2.45}{0.5}
+\repbox{llm}{1.9}{0.5}\repbox{ad}{1.35}{0.5}\repbox{est}{1.6}{0.5}\repbox{env}{2.4}{0.5}
+\reptxt{tA}\reptxt{tB}\reptxt{tC}\reptxt{gA}\reptxt{gB}\reptxt{gC}\reptxt{tq}\reptxt{t1}\reptxt{t2}\reptxt{ltrc}\reptxt{ldoc}\reptxt{ltel}\reptxt{lrt}\reptxt{lwr}\reptxt{lwt}
+\reptxt{lg0}\reptxt{lg1}\reptxt{lg2}
+\coordinate (calA) at (est.center); \coordinate (calB) at (uq.center);\repcal{calA}\repcal{calB}
+\repbbox
+\end{tikzpicture}
+\end{document}

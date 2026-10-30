@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Level 1 check: regenerate every table and figure of the paper and the supplement and compare them with the paper's.
 
-Runs the level-1 commands of docs/PACKAGE.md (tables, supplement tables, Figs. S1, 3 and 4, the observation grid of Fig. 1,
-pdflatex on the TikZ sources of Figs. 1 and 2) and compares every output with the reference copy under expected/:
+Runs the level-1 commands of docs/PACKAGE.md (tables, supplement tables, Fig. S1, the package renderings of Figs. 4 and 5,
+xelatex on the TikZ sources of Figs. 2 and 3) and compares every output with the reference copy under expected/:
 text files byte for byte, PDFs by rendering each page at 150 dpi with pdftoppm and comparing the pixels with Pillow.
+Tables, supplement tables, Fig. S1 and Figs. 2 and 3 are the paper's own files. Figs. 1, 4 and 5 of the paper were restyled
+by a co-author from the data in figures_and_tables/; their references here are the package's renderings of the same data.
 
 By default the commands run in a temporary copy of the package, so the package itself stays as released; --in-place
 runs them in the package. The path placeholders of docs/PACKAGE.md are set in whichever tree the commands run in; paths
@@ -119,16 +121,14 @@ def steps(root, py):
     return [
         ("tables", "python3 scripts/paper/make_tables_v2.py", [py, "scripts/paper/make_tables_v2.py"], root, {}, None),
         ("supp", "python3 papers/revision-v2/supplement/make_supp_tables.py", [py, f"{PAPER}/supplement/make_supp_tables.py"], root, {}, None),
-        ("figS1", "python3 scripts/paper/make_fig_lambda_supp_v2.py", [py, "scripts/paper/make_fig_lambda_supp_v2.py"], root, {}, None),
-        ("fig3", "FIG_OUT=$PWD/papers/revision-v2/figs/fig_designer_three.pdf python3 scripts/paper/make_fig_designer_v6.py",
+        ("figS1", "python3 scripts/paper/make_fig_lambda_supp_v3.py", [py, "scripts/paper/make_fig_lambda_supp_v3.py"], root, {}, "fonts"),
+        ("fig4", "FIG_OUT=$PWD/papers/revision-v2/figs/fig_designer_three.pdf python3 scripts/paper/make_fig_designer_v6.py",
          [py, "scripts/paper/make_fig_designer_v6.py"], root, {"FIG_OUT": str(root / PAPER / "figs/fig_designer_three.pdf")}, "pdflatex"),
-        ("fig4", "python3 scripts/paper/make_fig_closedloop_v1.py", [py, "scripts/paper/make_fig_closedloop_v1.py"], root, {}, None),
-        ("grid", "python3 scripts/paper/make_fig1_collector_grid_v1.py --palette greys --lighten 0.4 --out papers/revision-v2/figs/src/collector_grid_greys_light.tex",
-         [py, "scripts/paper/make_fig1_collector_grid_v1.py", "--palette", "greys", "--lighten", "0.4", "--out", f"{PAPER}/figs/src/collector_grid_greys_light.tex"], root, {}, None),
-        ("fig1", "(cd papers/revision-v2/figs/src && pdflatex fig_llm_position.tex)",
-         ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "fig_llm_position.tex"], src, {}, "pdflatex"),
-        ("fig2", "(cd papers/revision-v2/figs/src && pdflatex fig_envelope.tex)",
-         ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "fig_envelope.tex"], src, {}, "pdflatex"),
+        ("fig5", "python3 scripts/paper/make_fig_closedloop_v1.py", [py, "scripts/paper/make_fig_closedloop_v1.py"], root, {}, None),
+        ("fig2", "(cd papers/revision-v2/figs/src && xelatex fig_llm_position.tex)",
+         ["xelatex", "-interaction=nonstopmode", "-halt-on-error", "fig_llm_position.tex"], src, {}, "xelatex"),
+        ("fig3", "(cd papers/revision-v2/figs/src && xelatex fig_envelope.tex)",
+         ["xelatex", "-interaction=nonstopmode", "-halt-on-error", "fig_envelope.tex"], src, {}, "xelatex"),
     ]
 
 
@@ -145,11 +145,10 @@ OUTPUTS = [
     ("supplement/generated/tab_designer_src.tex", "supplement/generated/tab_designer_src.tex", "Sec. S8 per-stack table (released with the code)", "supp"),
     ("supplement/generated/prompt_template.txt", "supplement/generated/prompt_template.txt", "Fig. S2 (prompt)", "supp"),
     ("supplement/figS_lambda.pdf", "supplement/figS_lambda.pdf", "Fig. S1", "figS1"),
-    ("figs/fig_designer_three.pdf", "figs/fig_designer_three.pdf", "Fig. 3", "fig3"),
-    ("figs/fig_closedloop_dynamics.pdf", "figs/fig_closedloop_dynamics.pdf", "Fig. 4", "fig4"),
-    ("figs/src/collector_grid_greys_light.tex", "figs/src/collector_grid_greys_light.tex", "Fig. 1 (observation grid)", "grid"),
-    ("figs/src/fig_llm_position.pdf", "figs/fig_llm_position.pdf", "Fig. 1", "fig1"),
-    ("figs/src/fig_envelope.pdf", "figs/fig_envelope.pdf", "Fig. 2", "fig2"),
+    ("figs/fig_designer_three.pdf", "figs/fig_designer_three.pdf", "Fig. 4 data (package rendering)", "fig4"),
+    ("figs/fig_closedloop_dynamics.pdf", "figs/fig_closedloop_dynamics.pdf", "Fig. 5 data (package rendering)", "fig5"),
+    ("figs/src/fig_llm_position.pdf", "figs/fig_llm_position.pdf", "Fig. 2", "fig2"),
+    ("figs/src/fig_envelope.pdf", "figs/fig_envelope.pdf", "Fig. 3", "fig3"),
 ]
 
 
@@ -215,9 +214,10 @@ def main():
         description="Regenerate every table and figure of the paper and the supplement (docs/PACKAGE.md, level 1) and compare "
                     "them with the reference outputs in expected/: text byte for byte, PDFs pixel by pixel at 150 dpi.",
         epilog=f"Pixel identity of the figures needs the pinned versions of {req} (Python 3.13, numpy, matplotlib, "
-               "scipy and Pillow as listed there) and TeX Live with pdflatex, helvet, sansmath and TikZ; poppler's "
-               "pdftoppm renders the PDFs. With other versions the tables stay byte-identical but figures can differ in "
-               "a few pixels, and Fig. 3 may fail (it needs matplotlib 3.11). Run from the package root.")
+               "scipy and Pillow as listed there), TeX Live with pdflatex, helvet, sansmath, xelatex, fontspec and TikZ, and the "
+               "Arial and Times New Roman fonts (Figs. 2, 3 and S1); poppler's pdftoppm renders the PDFs. With other versions the "
+               "tables stay byte-identical but figures can differ in a few pixels, and the Fig. 4 rendering may fail (it needs "
+               "matplotlib 3.11). Run from the package root.")
     ap.add_argument("--in-place", action="store_true", help="run in the package itself instead of a temporary copy")
     ap.add_argument("--workdir", help="directory for the temporary copy, renders and logs (default: the system temporary directory)")
     ap.add_argument("--keep", action="store_true", help="keep the copy, renders and logs (they are kept anyway when a check fails)")
@@ -247,6 +247,9 @@ def main():
 
     py = sys.executable
     have = {"pdflatex": shutil.which("pdflatex"), "pdftoppm": shutil.which("pdftoppm")}
+    fonts = subprocess.run(["fc-list"], capture_output=True, text=True).stdout if shutil.which("fc-list") else ""
+    have["fonts"] = all(f in fonts for f in ("Arial", "Times New Roman")) or None          # Fig. S1
+    have["xelatex"] = (shutil.which("xelatex") and "Arial" in fonts) or None               # Figs. 2 and 3 set their text in Arial
     try: import PIL   # noqa: F401
     except ImportError: have["Pillow"] = None
     else: have["Pillow"] = True
@@ -259,7 +262,8 @@ def main():
     run_rows, status = [], {}
     for key, shown, argv, cwd, extra, tool in steps(work, py):
         if tool and not have.get(tool):
-            status[key] = f"skipped: {tool} not found"; run_rows.append((shown, "skipped", "-")); continue
+            why = {"fonts": "Arial or Times New Roman font not found", "xelatex": "xelatex or the Arial font not found"}.get(tool, f"{tool} not found")
+            status[key] = f"skipped: {why}"; run_rows.append((shown, "skipped", "-")); continue
         t0 = time.time()
         with open(logdir / f"{key}.log", "w", encoding="utf-8") as log:
             r = subprocess.run(argv, cwd=cwd, env=dict(env, **extra), stdout=log, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL)
@@ -300,7 +304,7 @@ def main():
         if miss: print(f"note: not listed in reproduce/EXPECTED_FILES.txt: {', '.join(miss)}")
     failed = [s for s in status.values() if s.startswith("exit")]
     ident = sum(1 for r in rows if r[2] == "identical")
-    print(f"\n{ident} of {len(rows)} outputs identical to the paper, {bad} not, {skipped} skipped; "
+    print(f"\n{ident} of {len(rows)} outputs identical to the reference, {bad} not, {skipped} skipped; "
           f"{len(failed)} of {len(status)} commands failed")
     if bad or failed or A.keep:
         print(f"{'logs and renders' if A.in_place else 'copy, logs and renders'} kept in {base}")

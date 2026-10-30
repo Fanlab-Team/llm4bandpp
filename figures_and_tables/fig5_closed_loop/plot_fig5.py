@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Fig. 4 of the paper (fig_closedloop_dynamics.pdf), redrawn from the CSV files in data/ alone.
+"""Data of Fig. 5 of the paper (fig_closedloop_dynamics.pdf), drawn in the package's earlier style from the CSV files in data/ alone.
 The drawing is that of dynamics() in scripts/paper/make_fig_closedloop_v1.py; only the data source differs (the CSV files
 were written by scripts/paper/export_figure_data_v1.py from the same functions, which read the per-frame and per-step logs).
-Usage: python3 plot_fig4.py [OUTPUT.pdf]   (default: fig_closedloop_dynamics.pdf next to this script)
+Usage: python3 plot_fig5.py [OUTPUT.pdf]   (default: fig_closedloop_dynamics.pdf next to this script)
 """
 import csv, json, sys
 from pathlib import Path

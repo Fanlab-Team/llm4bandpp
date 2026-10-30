@@ -13,14 +13,13 @@ supplement/generated/tab_variants.tex
 supplement/generated/tab_eplus.tex
 supplement/generated/tab_designer_src.tex
 supplement/generated/prompt_template.txt
-# Fig. S1 (scripts/paper/make_fig_lambda_supp_v2.py)
+# Fig. S1 (scripts/paper/make_fig_lambda_supp_v3.py)
 supplement/figS_lambda.pdf
-# Fig. 1: the observation grid (scripts/paper/make_fig1_collector_grid_v1.py) and the figure (pdflatex figs/src/fig_llm_position.tex)
-figs/src/collector_grid_greys_light.tex
+# Fig. 2 (xelatex figs/src/fig_llm_position.tex)
 figs/fig_llm_position.pdf
-# Fig. 2 (pdflatex figs/src/fig_envelope.tex)
+# Fig. 3 (xelatex figs/src/fig_envelope.tex)
 figs/fig_envelope.pdf
-# Fig. 3 (scripts/paper/make_fig_designer_v6.py)
+# Data of Fig. 4, package rendering (scripts/paper/make_fig_designer_v6.py); the paper's Fig. 4 was restyled by a co-author
 figs/fig_designer_three.pdf
-# Fig. 4 (scripts/paper/make_fig_closedloop_v1.py)
+# Data of Fig. 5, package rendering (scripts/paper/make_fig_closedloop_v1.py); the paper's Fig. 5 was restyled by a co-author
 figs/fig_closedloop_dynamics.pdf

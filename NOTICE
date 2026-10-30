@@ -54,3 +54,13 @@ Telemetry documentation
 
 Video clips
   Not included. The recipes in docs/TESTBED.md name the original sources and checksums.
+
+Figure icons
+  The icons in papers/revision-v2/figs/src/icons/ and figures_and_tables/fig2_system_overview/icons/ and
+  fig3_probing_envelope/icons/ (camera, network, traces, nn, loop) are taken from the authors' own LLM4Band slides and
+  are released with the figures under CC BY 4.0.
+
+Figures drawn by a co-author
+  Figs. 1, 4 and 5 of the paper were drawn by a co-author from the data in figures_and_tables/fig1_error_vs_size/,
+  fig4_designer/ and fig5_closed_loop/. The paper's PDFs are included as *_paper.pdf; the package's own scripts redraw
+  Figs. 4 and 5 from the same data in an earlier style.

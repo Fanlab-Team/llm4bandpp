@@ -56,6 +56,7 @@ def tab_eplus():
         if grp is rl:
             L.append(r"\midrule")
     L += [r"\bottomrule", r"\end{tabular}"]
+    L = [re.sub(r"\$\^\{[a-e]\}\$", "", x) for x in L]   # 2026-10-30: the supplement prints no lettered footnote marks, as in Table I of the paper
     write("tab_eplus.tex", L)
 
 

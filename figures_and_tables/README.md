@@ -1,14 +1,16 @@
 # Figures and tables
 
 One folder per figure and table of the paper and its supplement: the item as printed, its source or plotted data, and a
-README naming the generator and inputs. Figs. 3 and 4 redraw from their folders alone.
+README naming the generator and inputs. Figs. 2 and 3 rebuild from their TikZ sources pixel for pixel; Figs. 1, 4 and 5
+were drawn by a co-author from the plotted data in their folders.
 
 | Paper | Open | Data or source |
 |---|---|---|
-| Fig. 1. System overview | [`fig_llm_position.pdf`](fig1_system_overview/fig_llm_position.pdf) | [`fig_llm_position.tex`](fig1_system_overview/fig_llm_position.tex) (TikZ) |
-| Fig. 2. Probing envelope | [`fig_envelope.pdf`](fig2_probing_envelope/fig_envelope.pdf) | [`fig_envelope.tex`](fig2_probing_envelope/fig_envelope.tex) (TikZ) |
-| Fig. 3. Designer by method | [`fig_designer_three_paper.pdf`](fig3_designer/fig_designer_three_paper.pdf) | [`data/`](fig3_designer/data/), [`plot_fig3.py`](fig3_designer/plot_fig3.py) |
-| Fig. 4. Closed-loop dynamics | [`fig_closedloop_dynamics_paper.pdf`](fig4_closed_loop/fig_closedloop_dynamics_paper.pdf) | [`data/`](fig4_closed_loop/data/), [`plot_fig4.py`](fig4_closed_loop/plot_fig4.py) |
+| Fig. 1. Offline error against model size | [`fig_teaser_paper.pdf`](fig1_error_vs_size/fig_teaser_paper.pdf) | [`data/fig1_points.csv`](fig1_error_vs_size/data/fig1_points.csv) |
+| Fig. 2. System overview | [`fig_llm_position.pdf`](fig2_system_overview/fig_llm_position.pdf) | [`fig_llm_position.tex`](fig2_system_overview/fig_llm_position.tex) (TikZ) |
+| Fig. 3. Probing envelope | [`fig_envelope.pdf`](fig3_probing_envelope/fig_envelope.pdf) | [`fig_envelope.tex`](fig3_probing_envelope/fig_envelope.tex) (TikZ) |
+| Fig. 4. Designer by method | [`fig_designer_three_paper.pdf`](fig4_designer/fig_designer_three_paper.pdf) | [`data/`](fig4_designer/data/), [`plot_fig4.py`](fig4_designer/plot_fig4.py) |
+| Fig. 5. Closed-loop dynamics | [`fig_closedloop_dynamics_paper.pdf`](fig5_closed_loop/fig_closedloop_dynamics_paper.pdf) | [`data/`](fig5_closed_loop/data/), [`plot_fig5.py`](fig5_closed_loop/plot_fig5.py) |
 | Table I. Offline accuracy | [`table_offline.tex`](table1_offline_accuracy/table_offline.tex) | [README](table1_offline_accuracy/) |
 | Table II. Two LLM positions | [`table_position.tex`](table2_llm_positions/table_position.tex) | [README](table2_llm_positions/) |
 | Table III. Cost per decision | [`table_cost.tex`](table3_cost/table_cost.tex) | [README](table3_cost/) |

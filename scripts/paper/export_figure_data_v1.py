@@ -23,7 +23,7 @@ def write(path, header, rows):
 
 def fig3():
     import make_fig_designer_v4 as V4, make_fig_designer_v6 as V6
-    rows, c_host = V4.bar_rows(); D = V4.cl_cells(); d = OUT / "fig3_designer/data"
+    rows, c_host = V4.bar_rows(); D = V4.cl_cells(); d = OUT / "fig4_designer/data"
     out = []
     for r in rows:
         k = V6.kind(r, c_host); ba_rng, e2_rng = r[4], r[5]
@@ -38,7 +38,7 @@ def fig3():
 
 def fig4():
     import make_fig_closedloop_v1 as F, make_tables_v2 as T
-    G = T.reg(); cen, curve, ncell = F.time_curve(); tr = F.trace(); lc = F.lowcap(G); d = OUT / "fig4_closed_loop/data"
+    G = T.reg(); cen, curve, ncell = F.time_curve(); tr = F.trace(); lc = F.lowcap(G); d = OUT / "fig5_closed_loop/data"
     write(d / "panel_a_vmaf_over_time.csv", ["bin_centre_s", "vmaf_llm4bandpp", "vmaf_python_gcc"],
           [[float(c), float(a), float(g)] for c, a, g in zip(cen, curve[F.OURS], curve[F.GCC])])
     write(d / "panel_b_call_rates.csv", ["call_time_s", "estimate_mbps", "announced_mbps", "shadow_gcc_mbps"],

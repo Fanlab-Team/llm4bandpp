@@ -313,5 +313,30 @@ def table_cost():
     (OUT / "table_cost.tex").write_text(s); p.unlink()
 
 
+
+# Paper wording (2026-10-30). After the co-authors shortened the captions to one line and moved the explanations into
+# the text, the tables in the paper carry no notes below them and no lettered footnote marks. This pass turns the
+# generated tables into the paper's text; the numbers are those computed above and are not touched.
+PAPER_CAPTION = {
+    "table_offline.tex": r"\caption{Offline MSE in \textnormal{(Mb/s)$^2$}, lower is better, on 870 validation calls and the 712-call leakage-free subset. Shaded: lowest among offline RL estimators}",
+    "table_position.tex": r"\caption{Two LLM positions and their controls. Per step: change in macro MSE from pre-training against random initialization, 95\% interval. Designer: groups mapped correctly with names vs.\ masked}",
+    "table_designer.tex": r"\caption{Main results of the designer. $\Delta$: its advantage over the comparator, with 90\% interval. Dev.: deviation from the true mapping, or from packet-capture inputs in the last row. Shaded: interval above zero}",
+    "table_cost.tex": r"\caption{Cost per decision on a laptop (Core i9-13900H, RTX 4080 Laptop GPU). Shaded: below the 40\,ms deadline on the CPU at the 95th percentile}",
+    "table_closedloop_v2.tex": r"\caption{Closed-loop VMAF of LLM4band++ minus each reference: mean over cells with 90\% interval}",
+}
+PAPER_ROWS = {"table_closedloop_v2.tex": [("\nSeeds 0 and 2 &", "\nPolicy seeds 0 and 2 &")]}
+PAPER_END = {"table_designer.tex": "\n", "table_closedloop_v2.tex": "\n\n"}   # trailing newlines as in the paper's files
+
+
+def paper_style():
+    for name, cap in PAPER_CAPTION.items():
+        p = OUT / name; s = p.read_text()
+        s = re.sub(r"(?m)^\\caption\{.*\}$", lambda m: cap, s, count=1)
+        s = re.sub(r"\$\^\{[a-e]\}\$", "", s)
+        s = re.sub(r"\\begin\{tablenotes\}.*?\\end\{tablenotes\}", "", s, flags=re.S)
+        for a, b in PAPER_ROWS.get(name, []): s = s.replace(a, b)
+        if name in PAPER_END: s = s.rstrip("\n") + PAPER_END[name]
+        p.write_text(s)
+
 if __name__ == "__main__":
-    G = reg(); table_offline(); table_position(G); table_designer(G); table_closedloop(G); table_closedloop_v2(G); table_cost(); print("write all to", OUT)
+    G = reg(); table_offline(); table_position(G); table_designer(G); table_closedloop(G); table_closedloop_v2(G); table_cost(); paper_style(); print("write all to", OUT)

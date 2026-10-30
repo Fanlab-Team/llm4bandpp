@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Fig. 3 of the paper (fig_designer_three.pdf), redrawn from the CSV files in data/ alone.
+"""Data of Fig. 4 of the paper (fig_designer_three.pdf), drawn in the package's earlier style from the CSV files in data/ alone.
 The drawing is that of scripts/paper/make_fig_designer_v6.py; only the data source differs (the CSV files were written by
 scripts/paper/export_figure_data_v1.py from the same functions). Text is typeset by pdflatex through matplotlib's PGF backend
 with helvet and sansmath, as in Figs. 1 and 2, so a TeX installation with those packages is needed.
-Usage: python3 plot_fig3.py [OUTPUT.pdf]   (default: fig_designer_three.pdf next to this script)
+Usage: python3 plot_fig4.py [OUTPUT.pdf]   (default: fig_designer_three.pdf next to this script)
 """
 import csv, json, os, statistics as st, subprocess, sys
 from pathlib import Path

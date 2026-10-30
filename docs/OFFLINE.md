@@ -48,7 +48,7 @@ is the challenge baseline, "LLM4band++ (Qwen)" the one-token LLM variant, ...) t
 | Table II per-step row, supplement intervals (+2.2% [−4.0, +8.4], +0.1% [−4.8, +5.0], +2.7% [−0.2, +5.5]) | `python3 scripts/arb/perstep_position_ci_v1.py` | `llm_indispensability/paper_data/raw/`, `pretrained_fulltrain_fourth_arm/raw/` |
 | Encoder by reward ablation, Section V-C (8.1%, 6.4% to 10.2%; Low BW 5.0%, 2.5% to 8.0%) | `python3 scripts/encoder/nl2x2_v1/judge_nl2x2_v1.py dry` | `nl_2x2_v1/eval/`, `llm_indispensability/paper_data/per_trace.csv` |
 | Capacity anchor, Section V-B (6.386 to 5.819) | `python3 scripts/encoder/anchor_ablation_v1.py summarize` | `anchor_ablation_v1/eval/`, `nl_2x2_v1/eval/` |
-| HCQ weight sweep (6.25 at 0, 5.45 at 0.8, 5.48 at 1.0) | `python3 scripts/encoder/ch_lambda_sweep_v1.py summarize`, then `python3 scripts/paper/make_fig_lambda_supp_v2.py` (Fig. S1) | `ch_lambda_sweep_v1/eval/`, `nl_2x2_v1/eval/` |
+| HCQ weight sweep (6.25 at 0, 5.45 at 0.8, 5.48 at 1.0) | `python3 scripts/encoder/ch_lambda_sweep_v1.py summarize`, then `python3 scripts/paper/make_fig_lambda_supp_v3.py` (Fig. S1) | `ch_lambda_sweep_v1/eval/`, `nl_2x2_v1/eval/` |
 | Schaferct's network with our recipe (5.83) | `python3 scripts/encoder/finalize_scharch_v1_offline_v1.py` | `schaferct_arch_recipe_v1/eval/`, `nl_2x2_v1/eval/` |
 | Mamba aggregator, supplement (5.674 against 5.797, [−0.180, −0.058], threshold 0.152) | `python3 scripts/finalize_aggregator_mamba_control_v1_offline_v1.py` | `aggregator_mamba_control_v1/`, `llm_indispensability/paper_data/raw/NLs*` |
 | Corrected-encoder ablation on the LLM variant, supplement (−6.4%, −27.4%) | `python3 scripts/finalize_enc_hcq_2x2_v1_offline_v1.py` | `enc_hcq_2x2_v1/per_call_metrics.csv` |

@@ -24,7 +24,7 @@ request or decoding settings, seed, GPUs, what was stored and when the calls wer
 ## (a) Rescore every designer number
 
 Commands run from the package root with `python3`. The estimator downstream of the designer in the synthetic-schema
-replays, the getStats derivation test and the closed-loop test of Fig. 3(c) is the challenge baseline,
+replays, the getStats derivation test and the closed-loop test of Fig. 4(c) is the challenge baseline,
 `schaferct_public.onnx` (`docs/GLOSSARY.md`).
 
 | Result | Command | Reads, writes |

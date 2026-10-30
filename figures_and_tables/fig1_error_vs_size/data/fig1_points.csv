@@ -1,0 +1,8 @@
+method,parameters,macro_mse,parameters_source,macro_mse_source
+Challenge baseline,36413,7.263,initializers of experiments/results/switch_deploy_v1/models/schaferct_public.onnx,Table I
+Pioneer,485679,7.368,initializers of experiments/results/switch_deploy_v1/models/pioneer.onnx,Table I
+Schaferct-R,1157528,7.074,initializers of experiments/results/switch_deploy_v1/models/schaferct_retrained.onnx,Table I
+Decision Transformer,9600000,10.828,"three models of 3.2 M parameters each (Section S4 of the supplement)",Table I
+LLM4Band,465000000,6.927,Table III (465 M),Table I
+"LLM variant, 1 token",465000000,6.743,Table III (465 M),Table I
+"LLM4band++, deployed",683160,5.795,"scripts/alphartc/deploy/ch_estimator_v1/ckpt/ch.pt (docs/RESULTS_INDEX.md, Table III)",Table I

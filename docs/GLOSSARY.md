@@ -15,8 +15,8 @@ paper's terms. Each name below is mapped to its meaning and to the paper (Sectio
 | `ch` | C-H, in arm names, file names and printed labels | deployed estimator |
 | `nl`, `NL` | "No LLM": the multi-scale encoder without the LLM (M-H) | "No LLM" (Table S3), multi-scale variant (Sections V-C, V-D) |
 | `nl2x2` | The 2×2 ablation without the LLM: encoder (conference or multi-scale) × reward (λ = 0 or 0.4) | Section V-C |
-| `nl_estimator_v1/` | Code of the multi-scale estimators and the training code (`IQL.py`, `module.py`, ...), shared by all cells | Sections III-C, III-D, IV |
-| `conf`, `cf`, `full_conf`, `llm4band_conf` | The conference version LLM4Band (its LoRA model with Qwen1.5-0.5B) | "LLM4Band" (Tables I, III; Fig. 4(c)) |
+| `nl_estimator_v1/` | Code of the multi-scale estimators and the training code (`IQL.py`, `module.py`, ...), shared by all cells | Sections III-C and IV |
+| `conf`, `cf`, `full_conf`, `llm4band_conf` | The conference version LLM4Band (its LoRA model with Qwen1.5-0.5B) | "LLM4Band" (Tables I, III; Fig. 5(c)) |
 | `llm4bandpp`, `pp`, `LLM4band++ (Qwen)` | The one-token LLM variant of our earlier version, **not** the deployed system | "LLM variant, 1 token" (Tables I, III, S3, S4) |
 | `hcq` (in `measure_client_hardware_v5.py`, `client_hw_hcq_v1`) | The one-token LLM variant (a model trained with the HCQ reward). Elsewhere `hcq` means the reward itself. | "LLM, 1 tok." (Table III) |
 | HCQ | Holistic Communication Quality reward, Eq. (1) | Section III-A |
@@ -35,7 +35,7 @@ paper's terms. Each name below is mapped to its meaning and to the paper (Sectio
 | `PFsN`, `RIsN` | Pre-trained and fully trained; randomly initialized and fully trained | Table S3, Table II per-step row |
 | `MBsN` (files in `aggregator_mamba_control_v1/`) | The arm with the Mamba-style aggregator. In `nl_2x2_v1/eval/` the same prefix means cell M-B. | Table S3, "No LLM, Mamba agg." |
 | `enc_hcq_2x2` | Encoder × reward ablation repeated on the LLM variant with the corrected encoder | Section S2, "Corrected encoder" |
-| `Schaferct(public)`, `schaferct_public.onnx`, `schaf` | The challenge baseline: the offline RL baseline model released by the challenge organisers (`onnx_models/Offline_RL_baseline_bandwidth_estimator_model.onnx`, Microsoft, MIT license), at `experiments/results/switch_deploy_v1/models/schaferct_public.onnx` (sha256 `54e3113e1d0682a2...`). We took it from the Schaferct repository, where the byte-identical file is `onnx_model_for_evaluation/baseline.onnx` of the Schaferct repository, hence the name in the code; see `NOTICE`. | Challenge baseline (Table I); "challenge baseline downstream" (Table IV, Fig. 3(c)) |
+| `Schaferct(public)`, `schaferct_public.onnx`, `schaf` | The challenge baseline: the offline RL baseline model released by the challenge organisers (`onnx_models/Offline_RL_baseline_bandwidth_estimator_model.onnx`, Microsoft, MIT license), at `experiments/results/switch_deploy_v1/models/schaferct_public.onnx` (sha256 `54e3113e1d0682a2...`). We took it from the Schaferct repository, where the byte-identical file is `onnx_model_for_evaluation/baseline.onnx` of the Schaferct repository, hence the name in the code; see `NOTICE`. | Challenge baseline (Table I); "challenge baseline downstream" (Table IV, Fig. 4(c)) |
 | `Schaferct(retrained)`, `schaferct_retrained.onnx`, `scr` | Schaferct's architecture retrained on our split with its own recipe | Schaferct-R |
 | `MLP_seed0`, `mlp` | Supervised MLP regressor, seed 0 | Supervised MLP |
 | `LLM4Band conference version online weights (Qwen)` | LLM4Band, as printed by `main_table_unified_v1.py` | LLM4Band (Qwen) |
@@ -53,11 +53,11 @@ paper's terms. Each name below is mapped to its meaning and to the paper (Sectio
 | `dep` | The deployed system (C-H with the 5 kb/s floor and envelope v6), in `content320_ch_gcc_v1` and `lowbw_loss200_ch_v1` | "deployed system" |
 | `gcc_pt125_c200`, `gcc200`, `gcc` | The Python GCC of the conference code with its loss branch reading RTP payload type 125 (`pt125`), called every 200 ms (`c200`) | "Python GCC called every 200 ms", Section V-A |
 | `echo_x`, `echo` | Receiving-rate echo behind envelope v6 | Section V-F, echo test |
-| `arm_llm4band_conf_x` | LLM4Band (conference checkpoint) | Fig. 4(c), Section V-F, low capacities |
-| `arm_llm4bandpp_x` | One-token LLM variant | Section S7; the observation grid of Fig. 1 |
+| `arm_llm4band_conf_x` | LLM4Band (conference checkpoint) | Fig. 5(c), Section V-F, low capacities |
+| `arm_llm4bandpp_x` | One-token LLM variant | Section S7; the observation grid of Fig. 2 |
 | `arm_llm4bandpp_nl_x` | Multi-scale variant without the LLM | Section S9; behind an adapter it is `arm_nl_schema` (Table IV) |
 | `arm_schaferct_retrained_d`, `arm_mlp_d` | Schaferct-R and the supervised MLP with the settings of the deployed system (collector v6, floor, envelope v6) | Table V, learned estimators |
-| `arm_default_schema` | The challenge baseline behind an adapter, envelope v4 | Table IV "Closed loop, challenge baseline downstream", Fig. 3(c) |
+| `arm_default_schema` | The challenge baseline behind an adapter, envelope v4 | Table IV "Closed loop, challenge baseline downstream", Fig. 4(c) |
 | `arm_ch_schema` | The deployed system behind an adapter | Table IV "deployed system, 720p" |
 | `arm_ch_schema_tel` | The deployed estimator behind an adapter, envelope v4, no shadow GCC | Table IV "telemetry only" |
 | `arm_nl_schema` | Multi-scale variant behind an adapter, envelope v6 | Table IV "our multi-scale variant, deployed envelope" |
@@ -83,14 +83,14 @@ A higher version number marks a later batch, not a fix of an earlier one; each r
 | Name in package | Meaning | Paper term / section |
 |---|---|---|
 | envelope 0 | No probing envelope | "no envelope" |
-| envelope v4 (`safety_envelope_v4.py`) | The probing envelope without the shadow-GCC rules | Fig. 2 without †; Table IV rows "Closed loop, challenge baseline downstream" and "telemetry only" |
-| envelope v6 (`safety_envelope_v6.py`) | The deployed envelope: v4 plus the two shadow-GCC rules | Fig. 2 with †, Section III-E |
+| envelope v4 (`safety_envelope_v4.py`) | The probing envelope without the shadow-GCC rules | Fig. 3 without †; Table IV rows "Closed loop, challenge baseline downstream" and "telemetry only" |
+| envelope v6 (`safety_envelope_v6.py`) | The deployed envelope: v4 plus the two shadow-GCC rules | Fig. 3 with †, Section III-D |
 | envelope v2, v3, v5 (`safety_envelope.py`, `_v3`, `_v5`) | Earlier or tuning variants; no paper result uses them | none |
-| shadow GCC | `gcc_pt125_c200` run inside envelope v6 on the native packet reports | Section III-E |
-| collector (`spec_collector*.py`) | Code that turns packet reports into the 150-value observation | Section III-E, Table S1 |
+| shadow GCC | `gcc_pt125_c200` run inside envelope v6 on the native packet reports | Section III-D |
+| collector (`spec_collector*.py`) | Code that turns packet reports into the 150-value observation | Section III-D, Table S1 |
 | collector v1 (`spec_collector.py`) | The original collector | "Original" in Table S1 |
 | collector v5 | Loss counted per stream (per SSRC) | Table S1 item 11; Section V-F, "Collector corrections" |
-| collector v6 | v5 plus the constant for the unreported 41 kb/s audio stream; the collector of every closed-loop batch | "corrected collector", Section III-E |
+| collector v6 | v5 plus the constant for the unreported 41 kb/s audio stream; the collector of every closed-loop batch | "corrected collector", Section III-D |
 | collector v7 | v6 with the audio constant only in windows that received packets; used only in one exploratory smoke batch | none |
 | entry point v7 to v18 (`BandwidthEstimator_staleness_vNN.py`) | The receiver-side estimator entry point installed in the container; it selects the arm. Not every version number is shipped. | Section IV |
 | run script v10, v11, v17 to v29 (`run_staleness_once_twocontainer_midsnap_vNN.sh`) | The script that runs one call on the testbed and installs the components; these are the shipped versions | Section V-A, closed-loop testbed |
@@ -111,7 +111,7 @@ A higher version number marks a later batch, not a fix of an earlier one; each r
 | `hb_c3`, `hb_c6`, `hb_c10`, `hb_c15`, `hb_t1`, `hb_t2` | High-bandwidth batches: constant 3, 6, 10, 15 Mb/s and two UCC 4G windows from a train (mean 6.6 Mb/s) and a bus (10.5 Mb/s) | Section V-F, "High bandwidth" |
 | `hd_l2p1`, `hd_l2p5`, `hd_l8p1`, `hd_l8p5` | 2 or 8 Mb/s with 1% or 5% random loss | Section V-F, "random loss" |
 | `hd_cal20` | Constant 20 Mb/s, freeze-floor calibration | Section S7 |
-| `c100` to `c400`, `c1000` | 320×240, constant capacity in kb/s | Fig. 4(c); Table V 320×240 rows |
+| `c100` to `c400`, `c1000` | 320×240, constant capacity in kb/s | Fig. 5(c); Table V 320×240 rows |
 | `c200l1` | 200 kb/s with 1% random loss | Section V-F, "Low capacities" |
 | `low`, `medium`, `high` (320×240 sequence labels, the `content` field) | Johnny, Mobcal and Parkrun, ordered by mean temporal information (ITU-T P.910) | Table V 320×240 rows; Section V-A |
 | `paper_720p_low.yuv` etc. | The 1280×720, 15 fps sources from which the 320×240 sequences are scaled (`qoe_labeled_*_320x240.yuv`) | Section V-A |
@@ -123,7 +123,7 @@ A higher version number marks a later batch, not a fix of an earlier one; each r
 | `lowbw_<kb/s>`, `paper_low_<kb/s>`, `paper_high_<kb/s>`, `paper_fluct_400_1200`, `fast_alt_400_1200_p*`, `lowbw_trap_300_1000` (`profiles/lowbw/`) | 320×240 profiles of earlier batches: constant capacity in kb/s, or alternating between the two rates in the name; `lowbw_100`, `lowbw_156` and `paper_low_200` are the profiles of the collector-correction batches | Section V-F, "Collector corrections" |
 | `real_lowbw_01` to `real_lowbw_12` | Twelve 120 s cellular windows below 1 Mb/s from the public trace corpus, four per mean-rate band (below 300, 300 to 600, 600 to 1000 kb/s), used by earlier 320×240 batches | none |
 | `coldstart_real/` profiles (`4g_car_NN`, `4g_ped_NN`, `3g_tram_NN`, `3g_metro_NN`, ...); scenarios `medium_bw_call`, `4g_car`, `4g_ped`, `3g_tram`, `3g_metro` | Real-trace windows and evaluation scenarios of the switcher's LLM rule study (switch-llm-coldstart-v3) and of the unit-correction study | Sections VI, S9 |
-| `es_1` to `es_3`, `sd_1` to `sd_8`, `sc_1` to `sc_8`, `rt_1` to `rt_8` | Cellular windows of the synthetic-schema closed-loop batches: evidence and held-out windows of obsschema-closedloop-v2 (`es`, `sd`), windows of the first batch (`sc`, ferry and bus), windows of obsschema-closedloop-nl-v1 (`rt`) | Fig. 3(c); Table IV |
+| `es_1` to `es_3`, `sd_1` to `sd_8`, `sc_1` to `sc_8`, `rt_1` to `rt_8` | Cellular windows of the synthetic-schema closed-loop batches: evidence and held-out windows of obsschema-closedloop-v2 (`es`, `sd`), windows of the first batch (`sc`, ferry and bus), windows of obsschema-closedloop-nl-v1 (`rt`) | Fig. 4(c); Table IV |
 | `test_c` to `test_j`, `rt_getstats` and the other `rt_*` schemas; cell key `<schema>\|<window>` | Synthetic schemas (field names, order and units in `scripts/arb/obsschema_v1.py`; the closed-loop batches use `test_g` to `test_j`) and the five newer ones; a designer closed-loop cell is written schema\|window, e.g. `test_j\|hd_r1` | Section V-E, "Synthetic schemas"; Table IV |
 | `f0` to `f14`, "feature N" | The 15 interface features by 0-based index: 0 receiving rate, 1 received packets, 2 received bytes, 3 queueing delay, 4 delay, 5 minimum seen delay, 6 delay ratio, 7 delay minus minimum, 8 inter-arrival time, 9 jitter, 10 loss ratio, 11 lost packets, 12 to 14 video, audio and probing packet shares; feature i fills the observation values 10i to 10i + 9 | Section III-A; Table S1 |
 | `S01` to `S19` | Source ids of the blind-labeling sheet: S01 to S07 the seven specifications, S08 to S19 the 12 client stacks | Section V-E, "Protocol" |
@@ -134,20 +134,20 @@ A higher version number marks a later batch, not a fix of an earlier one; each r
 |---|---|---|
 | `coldstart` | Designer side: calls to the hosted and open models for a new client stack, the baseline matchers and their judges | Sections V-D, V-E, S8 |
 | `realtel` | Designer tests on real telemetry: the seven specifications (`realtel_adapter_v1`), the 12 client stacks (`realtel_scale_v1`) and their variants | Section V-E, Table IV |
-| `realtel_e2e` | End to end on real software (Chrome, iperf3, `tcp_info`, GStreamer) against packet captures; also the browser derivation function and the single-field masking runs | Section V-E, Fig. 3(b) |
+| `realtel_e2e` | End to end on real software (Chrome, iperf3, `tcp_info`, GStreamer) against packet captures; also the browser derivation function and the single-field masking runs | Section V-E, Fig. 4(b) |
 | `closure` | The browser `getStats()` derivation function written by a third prompt | Table IV "Browser getStats only", Section S8 |
 | `mask_offline` | The deployed estimator with only the features a stack exposes as single fields | Section V-E (5.80 rises to 9.0 to 23.3) |
-| `obsschema` | Synthetic schemas that rename, reorder and rescale the 15 features; `_cl` and `_cl2` are their closed-loop batches, `_rt` the five newer schemas (one, `rt_getstats`, follows getStats naming) | Section V-E "Synthetic schemas"; Table II; Fig. 3(c) |
+| `obsschema` | Synthetic schemas that rename, reorder and rescale the 15 features; `_cl` and `_cl2` are their closed-loop batches, `_rt` the five newer schemas (one, `rt_getstats`, follows getStats naming) | Section V-E "Synthetic schemas"; Table II; Fig. 4(c) |
 | `openreason` | Open reasoning models (DeepSeek-R1 distillations) on the synthetic schemas | Table II |
 | `strong_baseline`, `unitname` | The unit-aware matcher we wrote, a non-LLM baseline that reads names and values | Table IV, "unit-aware matcher" |
 | `namehide` | Each field's own name masked | Table IV "field names hidden" |
 | `cfdoc` | Counterfactual documentation: units and counting rules rewritten to contradict the public text | Section V-E (33 of 33 cells) |
 | `repeat` | Repeated hosted calls | Section V-E, S8 |
-| `llm_schema_match` | The same LLM used as a generic schema matcher | "LLM match" (Fig. 3), Table IV |
-| `twostep` | Fields, then units and counting rules, in two calls | "Two-step" (Fig. 3), Table IV |
+| `llm_schema_match` | The same LLM used as a generic schema matcher | "LLM match" (Fig. 4), Table IV |
+| `twostep` | Fields, then units and counting rules, in two calls | "Two-step" (Fig. 4), Table IV |
 | `designer_scale` | Qwen1.5-0.5B-Chat as designer | Sections V-D, S8 |
 | `r1qwen_size` | R1 distillations into Qwen at 1.5B, 7B, 14B, 32B | Section V-D, S8 |
-| `open_sampling_variance` | Three samples of each open model | Fig. 3 (means of three samples) |
+| `open_sampling_variance` | Three samples of each open model | Fig. 4 (means of three samples) |
 | `open70b` | A 70B distillation, scored but not used in the paper | none |
 | `kindmiss` | Different-definition pairs scored as features to be declared missing | Section S8 |
 | `gt_blind_expert`, `gt_engineer_sens` | The engineer's blind labels, and the rescoring with them | Section V-E, S8 |
@@ -168,8 +168,8 @@ A higher version number marks a later batch, not a fix of an earlier one; each r
 | `steady_qoe` | Split of the VMAF difference into the first 30 s and the rest | Section V-F |
 | `client_hw` | Latency and energy measurements | Table III |
 | `llm_indispensability`, `pretrained_fulltrain_fourth_arm` | Per-step LLM position study: LoRA against no LLM; pre-trained against randomly initialized, both fully trained | Table II, Table S3, Section V-D |
-| `NAME`, `TFIDF`, `CUPID`, `COMA`, `SF`, `MPNET`, `BGE`; `MAP_CUPID` | The seven non-LLM matchers in judge files and registry texts: name similarity, name and documentation TF-IDF, Cupid, COMA, Similarity Flooding, and the all-mpnet and bge-large embedding retrievers; `MAP_CUPID` is Cupid's mapping in the getStats derivation test | Fig. 3; Table IV |
-| `LLM`, `NAME`, `DIST`, `NONE`, `CLEAN` (mapping labels in job names and judge output) | The designer's mapping, name matching, distribution matching, no adaptation, and the true mapping | Fig. 3(c); Table IV |
+| `NAME`, `TFIDF`, `CUPID`, `COMA`, `SF`, `MPNET`, `BGE`; `MAP_CUPID` | The seven non-LLM matchers in judge files and registry texts: name similarity, name and documentation TF-IDF, Cupid, COMA, Similarity Flooding, and the all-mpnet and bge-large embedding retrievers; `MAP_CUPID` is Cupid's mapping in the getStats derivation test | Fig. 4; Table IV |
+| `LLM`, `NAME`, `DIST`, `NONE`, `CLEAN` (mapping labels in job names and judge output) | The designer's mapping, name matching, distribution matching, no adaptation, and the true mapping | Fig. 4(c); Table IV |
 | `LLM_OBF`, `OBF`, `NAMED`, `field_01` to `field_15` | The designer with each field's own name replaced by a placeholder `field_NN`, against the same prompt with the real names | Table II, masked names |
 | `r1_32b`, `r1_14b`, `r1_7b`, `r1_1p5b` (suffix `_sdNNNNNNNN`), `ds_q15_05b`, `ds_q25_15b`, `ds_q25_7b` | Open designer models: R1 distillations into Qwen 32B (4-bit), 14B, 7B and 1.5B; Qwen1.5-0.5B-Chat, Qwen2.5-1.5B-Instruct and Qwen2.5-7B-Instruct | Sections V-D, S8 |
 | `SNAP1000`, `SNAPALL`, `HAND` | Non-LLM baselines of the unit-correction study: snapping each scale to the unit factors 10^±3 and 10^±6 (`SNAP1000`), also 8, 1/8, 100 and 1/100 (`SNAPALL`), and our rule-based consistency check designed on the two error types of the development groups (`HAND`) | Section S9, unit corrections |
@@ -198,7 +198,7 @@ A higher version number marks a later batch, not a fix of an earlier one; each r
 | `exploratory` | An analysis chosen after the data were seen; no verdict | "exploratory" in the paper |
 | data event | A numeric result in `experiments/registry.jsonl` | Section S9 |
 | `scripts/exp.py`, `registry_local.jsonl` | A minimal logger with the interface of our registry tool; judges call it, and it appends to `experiments/registry_local.jsonl` | none |
-| BA | Balanced accuracy: the mean of the share of mappable features mapped with the right field, differencing and scale (within 2%) and the share of unmappable features declared missing | Section III-F, "Output" |
+| BA | Balanced accuracy: the mean of the share of mappable features mapped with the right field, differencing and scale (within 2%) and the share of unmappable features declared missing | Section III-D, "Output" |
 | tier: `confirmatory`, `exploratory` | Registry field: a confirmatory entry was registered with its criterion before it ran; an exploratory entry records an analysis of registered runs | Section V-A, "Statistics" |
 | `Report only:` | Label in registry verdict texts and judge output before readings recorded without a criterion; they are not judged | "reported only" |
 | Group A to D; Group D safety line | Decision groups of the offline pre-registrations; group D is the safety line: no scenario's worsening may raise macro MSE by more than 1% | Section V-C |

@@ -1,6 +1,6 @@
 # Levels 1 and 2 of README.md: tables, figures and recomputed numbers. Tested with Python 3.13.13 and these versions.
-# Install: pip install -r requirements-level1.txt. TeX Live (pdflatex on PATH, with helvet, sansmath and TikZ) is also
-# needed for Figs. 1 to 3.
+# Install: pip install -r requirements-level1.txt. TeX Live (pdflatex and xelatex on PATH, with helvet, sansmath,
+# fontspec and TikZ) and the Arial and Times New Roman fonts are also needed for Figs. 2, 3 and S1.
 numpy==2.5.3
 matplotlib==3.11.2
 scipy==1.18.1

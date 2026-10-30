@@ -17,9 +17,9 @@ their means, intervals and verdicts, from per-call, per-run or per-answer data. 
 | Anchor, reward and encoder ablations; reward-weight sweep (Sections V-B, V-C, S4, S6; Fig. S1) | Yes | Yes | External: retrain the four ablation cells C-H, C-B, M-H and M-B (conference or multi-scale encoder, HCQ or conference reward) and the anchor and λ variants from the public data on a GPU |
 | Two LLM positions (Table II, Section V-D, Table S3) | Yes | Yes: per-step contrasts from per-call results, designer rows by rescoring saved answers | Per step: No (estimator files and checkpoints of the LLM variants are not included). Designer: External (an API key for the hosted model, or two GPUs for the open models; new synthetic-schema mappings must be replayed on the challenge calls) |
 | Cost per decision (Table III) | Yes | Yes: parameter count and FLOPs of the deployed checkpoint; designer wall time and cost from the call records | External: the latency script on your hardware; latencies depend on the machine. The LLM arms run with random weights of the same architecture and need Qwen1.5-0.5B's `config.json` |
-| Designer: on 12 held-out client stacks, balanced accuracy 0.92 against 0.56 for the best non-LLM matcher, and the other designer tests (Table IV, Fig. 3, Sections V-E, S8) | Yes | Yes for every offline, replayed and packet-capture number, for Fig. 3(c) and, from per-run rows, for the three 720p closed-loop designer rows of Table IV; the multi-scale variant row only from its recorded reading (no per-run rows) | External: hosted calls (API key; new answers will differ, and the hosted model's full answers were not stored), open models (two GPUs, vLLM), captures of real software (Chrome, iperf3, GStreamer), the testbed for closed-loop rows |
-| Closed loop: non-inferior to the Python GCC at 720p, low-capacity, cellular, loss and high-bandwidth results (Table V, Fig. 4, Sections V-F, S6, S7) | Yes | Yes, from per-run rows; the batch judges themselves read per-run logs, which are not shipped | External: an AlphaRTC testbed (the Dockerfile is a draft we have not built), videos and two trace sets rebuilt from their sources; the LLM4Band reference needs the conference checkpoint (not included). No for the envelope batches of Section S7 (their run script and LLM-variant checkpoint are not included) |
-| Collector corrections (Section III-E, first paragraph of Section V-F, Table S1) | Table S1 is typeset by hand from the registry entries it cites | Partly, from replay results, run lists and per-step exports (`docs/RESULTS_INDEX.md`, Sections III-E and V-F, Table S1); otherwise recorded readings only (`experiments/registry.jsonl`) | No: the replayed receiver logs and the run scripts of those batches are not shipped |
+| Designer: on 12 held-out client stacks, balanced accuracy 0.92 against 0.56 for the best non-LLM matcher, and the other designer tests (Table IV, Fig. 4, Sections V-E, S8) | Yes | Yes for every offline, replayed and packet-capture number, for Fig. 4(c) and, from per-run rows, for the three 720p closed-loop designer rows of Table IV; the multi-scale variant row only from its recorded reading (no per-run rows) | External: hosted calls (API key; new answers will differ, and the hosted model's full answers were not stored), open models (two GPUs, vLLM), captures of real software (Chrome, iperf3, GStreamer), the testbed for closed-loop rows |
+| Closed loop: non-inferior to the Python GCC at 720p, low-capacity, cellular, loss and high-bandwidth results (Table V, Fig. 5, Sections V-F, S6, S7) | Yes | Yes, from per-run rows; the batch judges themselves read per-run logs, which are not shipped | External: an AlphaRTC testbed (the Dockerfile is a draft we have not built), videos and two trace sets rebuilt from their sources; the LLM4Band reference needs the conference checkpoint (not included). No for the envelope batches of Section S7 (their run script and LLM-variant checkpoint are not included) |
+| Collector corrections (Section III-D, first paragraph of Section V-F, Table S1) | Table S1 is typeset by hand from the registry entries it cites | Partly, from replay results, run lists and per-step exports (`docs/RESULTS_INDEX.md`, Sections III-D and V-F, Table S1); otherwise recorded readings only (`experiments/registry.jsonl`) | No: the replayed receiver logs and the run scripts of those batches are not shipped |
 
 ## Requirements and expected time
 
@@ -41,9 +41,12 @@ Times are approximate and were measured on our machines: a laptop with a Core i9
 
 Environment: Python 3.13.13 with the pinned versions in `requirements-level1.txt`
 (`pip install -r requirements-level1.txt`), with which levels 1 and 2 were tested; torch and onnxruntime are needed
-only for the commands named in the file. TeX Live with `pdflatex` on `PATH` and the packages `helvet`, `sansmath` and
-TikZ: Figs. 1 and 2 are TikZ, and Fig. 3 is typeset through matplotlib's PGF backend. With other matplotlib versions
-Fig. 3 may fail (`hatchcolor` needs 3.11) and the other figures can differ in a few pixels; the numbers do not change.
+only for the commands named in the file. TeX Live with `pdflatex` and `xelatex` on `PATH` and the packages `helvet`,
+`sansmath`, `fontspec` and TikZ, and the Arial and Times New Roman fonts: Figs. 2 and 3 are TikZ set in Arial with
+xelatex, Fig. S1 uses Arial and Times through matplotlib, and the package rendering of Fig. 4 is typeset through
+matplotlib's PGF backend. With other matplotlib versions that rendering may fail (`hatchcolor` needs 3.11) and the other
+figures can differ in a few pixels; the numbers do not change. Figs. 1, 4 and 5 of the paper were restyled by a co-author
+from the data in `figures_and_tables/`; for Figs. 4 and 5 the package redraws the same data in its earlier style.
 Two helper scripts that the levels do not need use one more package each, versions not recorded: `openpyxl`
 (`scripts/paper/gt_blind_compare_v1.py`, which reads the engineer's label sheet, not released) and `beautifulsoup4`
 (`data/real_telemetry_specs_v2/build.py`, which checks quotes against the documentation snapshots). Training used Python 3.10.18 with the versions in
@@ -67,12 +70,10 @@ Then:
 ```bash
 python3 scripts/paper/make_tables_v2.py                   # Tables I to V
 python3 papers/revision-v2/supplement/make_supp_tables.py # Tables S3 and S4, the per-stack table, the prompt of Fig. S2
-python3 scripts/paper/make_fig_lambda_supp_v2.py          # Fig. S1
-FIG_OUT=$PWD/papers/revision-v2/figs/fig_designer_three.pdf python3 scripts/paper/make_fig_designer_v6.py   # Fig. 3
-python3 scripts/paper/make_fig_closedloop_v1.py           # Fig. 4
-python3 scripts/paper/make_fig1_collector_grid_v1.py --palette greys --lighten 0.4 \
-  --out papers/revision-v2/figs/src/collector_grid_greys_light.tex   # the observation grid inside Fig. 1
-(cd papers/revision-v2/figs/src && pdflatex fig_llm_position.tex && pdflatex fig_envelope.tex)   # Figs. 1 and 2
+python3 scripts/paper/make_fig_lambda_supp_v3.py          # Fig. S1
+FIG_OUT=$PWD/papers/revision-v2/figs/fig_designer_three.pdf python3 scripts/paper/make_fig_designer_v6.py   # data of Fig. 4
+python3 scripts/paper/make_fig_closedloop_v1.py           # data of Fig. 5
+(cd papers/revision-v2/figs/src && xelatex fig_llm_position.tex && xelatex fig_envelope.tex)   # Figs. 2 and 3
 ```
 
 | Output (under `papers/revision-v2/`) | Paper item |
@@ -88,11 +89,10 @@ python3 scripts/paper/make_fig1_collector_grid_v1.py --palette greys --lighten 0
 | `supplement/generated/prompt_template.txt` | the prompt of Fig. S2 |
 | `supplement/generated/tab_designer_src.tex` | the per-stack table that Section S8 says is released with the code |
 | `supplement/figS_lambda.pdf` (data in `figS_lambda.json`) | Fig. S1 |
-| `figs/src/fig_llm_position.pdf` | Fig. 1 |
-| `figs/src/collector_grid_greys_light.tex` | the observation grid inside Fig. 1; the regenerated file compares equal to the shipped one |
-| `figs/src/fig_envelope.pdf` | Fig. 2 |
-| `figs/fig_designer_three.pdf` | Fig. 3 |
-| `figs/fig_closedloop_dynamics.pdf` | Fig. 4 |
+| `figs/src/fig_llm_position.pdf` | Fig. 2 |
+| `figs/src/fig_envelope.pdf` | Fig. 3 |
+| `figs/fig_designer_three.pdf` | the data of Fig. 4 in the package's style (the paper's figure was restyled by a co-author) |
+| `figs/fig_closedloop_dynamics.pdf` | the data of Fig. 5 in the package's style (as above) |
 | `figs/fig_closedloop_forest.pdf` | the Table V readings drawn as a forest plot; not in the paper |
 
 Tables S1 and S2 are typeset by hand from the registry entries they cite.
@@ -101,7 +101,7 @@ Two scripts print messages that do not match the paper:
 
 - `make_tables_v2.py` prints messages from an older numbering: "Table II generated" refers to Table I
   (`table_offline.tex`), and "Table 6 generated; switcher FLOPs ..." to Table III (`table_cost.tex`).
-- `make_fig_closedloop_v1.py` prints for Fig. 4(a) a ramp-up difference of 18.41 (registered 18.79) and a steady
+- `make_fig_closedloop_v1.py` prints for Fig. 5(a) a ramp-up difference of 18.41 (registered 18.79) and a steady
   difference of −0.76 (registered −0.16). The figure averages 2 s bins with equal weight up to 120 s and fills the 1.0%
   of empty bins by interpolation, whereas the registered values of closedloop-steady-qoe-v1, which the paper quotes,
   average all decoded frames of each run within each segment; the script checks that the two agree within 1 VMAF.
@@ -147,9 +147,9 @@ of the package, or under git, to compare.
 | `data/` | field transcriptions of the real telemetry sources (ground truth), documentation snapshots, the interface specification |
 | `registry/` | English summary of the registered experiments and their pre-registration notes |
 | `papers/` | figure sources and the supplement table generator; the level-1 commands write their outputs here |
-| `figures_and_tables/` | one folder per figure and table of the paper and supplement: a copy of the item, its source or plotted data, and a README naming the generator and inputs; Figs. 3 and 4 with standalone plotting scripts (`scripts/paper/export_figure_data_v1.py` writes their CSV files) |
+| `figures_and_tables/` | one folder per figure and table of the paper and supplement: a copy of the item, its source or plotted data, and a README naming the generator and inputs; Figs. 4 and 5 with standalone plotting scripts (`scripts/paper/export_figure_data_v1.py` writes their CSV files) |
 | `docs/` | this reference, the reproduction guides, the results index, the glossary, the training requirements and the testbed Dockerfile draft |
-| `docs/figures/` | PNG renderings of Figs. 1, 3 and 4 for the README; the reference PDFs are in `expected/figs/` |
+| `docs/figures/` | PNG renderings of Figs. 2, 4 and 5 for the README; the reference PDFs are in `expected/figs/` |
 | `reproduce/` | checks for levels 1 and 2 (`verify_level1.py`, `run_level2.sh`) |
 | `expected/` | reference copies of the level-1 outputs, taken from the paper sources |
 

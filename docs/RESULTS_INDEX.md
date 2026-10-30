@@ -49,24 +49,30 @@ encoder (the no-LLM multi-scale variant, the LLM variants, the Mamba arm): `D/nl
 
 ## Main text: figures and tables
 
-### Fig. 1. System overview
+### Fig. 1. Offline error against model size
 
-- Reports: no measured number. The adapter excerpt (receiving rate = `mbpsRecvRate` × 10^6, queueing missing) is the
-  hosted designer's answer for SRT in `R/realtel_scale_v1/llm_deepseek.jsonl`; the grid is one real observation.
-- Registry: realtel-scale-v1 (excerpt), hd720-closedloop-v1 (observation).
-- Level 1: `python3 scripts/paper/make_fig1_collector_grid_v1.py --palette greys --lighten 0.4 --out papers/revision-v2/figs/src/collector_grid_greys_light.tex`,
-  then `(cd papers/revision-v2/figs/src && pdflatex fig_llm_position.tex)`. Input of the grid:
-  `T/hd720-closedloop-v1/main/hd_c2__johnny__pp__r1/obs_arm_llm4bandpp_x__hd_c2__d0__r1__vjohnny.jsonl.gz`.
-- Limits: the batch behind the observation used a run script that is not in the package.
+- Reports: macro MSE on the 870 validation calls (Table I) against the parameter count of each offline RL estimator;
+  the Decision Transformer (10.828) is off scale.
+- Data: `figures_and_tables/fig1_error_vs_size/data/fig1_points.csv`, with the source of every value; the parameter
+  counts of the three ONNX baselines are the sizes of their initializers.
+- Level 1: the macro MSE column is regenerated with Table I. The figure itself was drawn by a co-author from these
+  values; the package has no script for its styling.
 
-### Fig. 2. Probing envelope
+### Fig. 2. System overview
 
-- Reports: the three states and rules of Section III-E (growth to 1.5R + 10 kb/s, 0.9C during a 10 s hold that doubles
+- Reports: no measured number. It shows the offline training of the estimator (IQL with the HCQ reward and the capacity
+  anchor on the balanced replay buffer), the LLM designer that writes the telemetry adapter once per client stack, and
+  the estimator that runs every 60 ms without an LLM behind the probing envelope.
+- Level 1: `(cd papers/revision-v2/figs/src && xelatex fig_llm_position.tex)` (Arial font; icons in `icons/`).
+
+### Fig. 3. Probing envelope
+
+- Reports: the three states and rules of Section III-D (growth to 1.5R + 10 kb/s, 0.9C during a 10 s hold that doubles
   up to 80 s, release after 5 s above C, at most one cut per second; † rules from a shadow GCC).
 - Code: `D/safety_envelope_v6.py` (deployed, with the † rules), built on `D/safety_envelope_v4.py` (without them); the
   constants are at the top of both files. The shadow GCC is `D/gcc_pt125_c200_v1.py`.
 - Registry: compete-flow-v2 and hd720-closedloop-env6-v1 (the † rules, Section S7).
-- Level 1: `(cd papers/revision-v2/figs/src && pdflatex fig_envelope.tex)`.
+- Level 1: `(cd papers/revision-v2/figs/src && xelatex fig_envelope.tex)` (Arial font; icons in `icons/`).
 
 ### Table I. Offline accuracy
 
@@ -161,7 +167,7 @@ Level 1 for all rows: `make_tables_v2.py`, function `table_designer`; it reads t
 | fields then units, two calls (N) | 0.920 vs 0.966, −0.046 [−0.092, −0.001] | llm-twostep-match-v1 | `llm_twostep_match_v1.py judge` [`llm_twostep_match_v1/llm_twostep.jsonl`, `realtel_e2e_v1/runs/*`] | `llm_twostep_match_v1.py llm` |
 | stacks, names hidden (R) | 0.947 vs 0.560, +0.39 [+0.30, +0.46] | realtel-scale-namehide-v1 | `realtel_scale_namehide_v1.py judge` [`realtel_scale_v1/namehide/llm_deepseek.jsonl`, `sources_hidden.json`] | `realtel_scale_namehide_v1.py llm` |
 | real software, 42 cells (P) | 1.000 vs 0.762 Sim. Flooding, +0.24 [+0.13, +0.38] | realtel-e2e-v1 (ground truth revised post hoc; 48 cells and +0.333 as registered) | `realtel_e2e_v1.py judge`, then `make_tables_v2.py` [`realtel_e2e_v1/runs/*/cap.pcap` and telemetry of 24 runs] | `scripts/realtel_e2e/run_e2e_v1.sh` (Chrome, iperf3, tcp_info, GStreamer) |
-| closed loop, challenge baseline downstream (R) | 1.16 vs 6.01 name, +4.85 [+4.11, +5.60] | obsschema-closedloop-v2 | `python3 scripts/paper/make_fig_closedloop_designer_v2.py` [`T/obsschema-closedloop-v2/`] | Fig. 3(c) |
+| closed loop, challenge baseline downstream (R) | 1.16 vs 6.01 name, +4.85 [+4.11, +5.60] | obsschema-closedloop-v2 | `python3 scripts/paper/make_fig_closedloop_designer_v2.py` [`T/obsschema-closedloop-v2/`] | Fig. 4(c) |
 | multi-scale variant downstream (N) | 2.55 vs 2.87 distribution, +0.32 [−0.62, +1.16] | obsschema-closedloop-nl-v1 | read `mean_dev`, `delta`, `ci90` and `severe_loss` of [`T/obsschema-closedloop-nl-v1/result_v1.json`]; its per-run files are not shipped | `D/obsschema_rt_nl_v1.py`, run script v17, `arm_nl_schema` (`D/fixed_schema_nl_v1.py`, collector v6, envelope v6); needs the multi-scale checkpoint |
 | deployed system, 720p (P, N) | 69.4 vs 65.2 name, +4.17 [−0.37, +8.69]; as registered +2.26 [−2.72, +6.42] | hd720-designer-ch-v1 | snippet of "Section V-E. In closed loop" [`hd720_designer_ch_v1/runs_full.jsonl`]; `hd720_designer_ch_v1/rejudge_fail0.json` | `D/hd720_designer_ch_v1.py`, run script v25, `arm_ch_schema` (`D/fixed_schema_ch_v1.py`, collector v6, floor, envelope v6) |
 | telemetry only, VMAF (N) | 76.5 vs 46.0 distribution, +30.55 [+21.72, +39.45] | hd720-designer-tel-v2 | the same snippet [`hd720_designer_tel_v2/runs_full.jsonl`] | `D/hd720_designer_tel_v2.py`, run script v27 |
@@ -174,7 +180,7 @@ replays of synthetic schemas need the challenge calls; the 720p designer batches
 `arm_ch_schema_tel` (`D/fixed_schema_ch_v2.py`): the deployed estimator, collector v6, 5 kb/s floor, envelope v4, no
 shadow GCC.
 
-### Fig. 3. Designer by method
+### Fig. 4. Designer by method
 
 - Registry: realtel-scale-v1, llm-schema-match-baseline-v1, llm-twostep-match-v1, open-sampling-variance-v1,
   realtel-e2e-v1, obsschema-closedloop-v2.
@@ -268,7 +274,7 @@ check("hd720_learned_alone_v1", CH, "arm_schaferct_retrained_d", keep=env0)
   their per-run rows. The high-bandwidth rows need the patched sender binary (`D/patch_pcs_maxbitrate_v1.py`). The UCC 4G
   and Norwegian 3G windows must be rebuilt (`docs/TESTBED.md`, section 5).
 
-### Fig. 4. Closed-loop dynamics
+### Fig. 5. Closed-loop dynamics
 
 - Level 1: `python3 scripts/paper/make_fig_closedloop_v1.py` → `papers/revision-v2/figs/fig_closedloop_dynamics.pdf`
   (it also writes `fig_closedloop_forest.pdf`, which the paper does not use).
@@ -332,7 +338,7 @@ check("hd720_learned_alone_v1", CH, "arm_schaferct_retrained_d", keep=env0)
   log standard deviation.
 - Level 3: `scripts/encoder/make_balanced_pickle_v1.py --skip-bins 3-4` rebuilds the bins and the sample (`docs/OFFLINE.md`).
 
-### Section III-E. Collector discrepancies and audio
+### Section III-D. Collector discrepancies and audio
 
 - Reports: with loss counted over the primary and retransmission sequence spaces together, replayed estimates of 2056 to 7602 kb/s, against 192 to 239 kb/s
   once corrected; the unreported audio stream is about 41 kb/s; restoring it raised the 400 kb/s utility of the
@@ -398,7 +404,7 @@ check("hd720_learned_alone_v1", CH, "arm_schaferct_retrained_d", keep=env0)
   behind the envelope no weight differs. Details in Section S6 below.
 - Registry: ch-lambda-sweep-v1, hd720-lambda-ch-v1, lowbw-lambda-seeds-v1, lowbw-lambda-env6-v1.
 - Level 1 and 2: `python3 scripts/encoder/ch_lambda_sweep_v1.py summarize` (inputs `R/ch_lambda_sweep_v1/eval/CHl*s*.json`,
-  `R/nl_2x2_v1/eval/CB*`, `CH*`), then `python3 scripts/paper/make_fig_lambda_supp_v2.py` (Fig. S1). Closed loop: the
+  `R/nl_2x2_v1/eval/CB*`, `CH*`), then `python3 scripts/paper/make_fig_lambda_supp_v3.py` (Fig. S1). Closed loop: the
   snippet of Section S6.
 - Level 3: offline `--reward_lambda X` (`docs/OFFLINE.md`); checkpoints `ch_l*.pt` in `D/ch_estimator_v1/ckpt/`;
   closed loop as in Section S6.
@@ -498,7 +504,7 @@ check("hd720_learned_alone_v1", CH, "arm_schaferct_retrained_d", keep=env0)
 ### Section V-E. In closed loop
 
 - Reports: (1) challenge baseline downstream: 1.16 (signed +0.1) against name matching 6.01 (signed −1.5), 7
-  cells with a 10-point loss (Fig. 3(c)). (2) Multi-scale variant behind the deployed envelope: name matching 7 cells
+  cells with a 10-point loss (Fig. 4(c)). (2) Multi-scale variant behind the deployed envelope: name matching 7 cells
   with a 10-point loss; 720p deployed system: the designer breaks no call (a call breaks when its run fails the testbed's validity check, for
   example because video stopped arriving more than 8 s before the end, or yields no VMAF), no adaptation 4 of 20, distribution matching
   3; lead 4.2 VMAF. (3) Telemetry only: three batches; the designer's mappings break 1 of 60 calls, the true mapping 1
@@ -607,7 +613,7 @@ check("hd720_learned_alone_v1", CH, "arm_schaferct_retrained_d", keep=env0)
 
 - Reports: the 720p batches include two cellular windows (`hd_r1`, `hd_r2`); the separate cellular batch drew eight
   windows of UCC 4G and Chorus, and the revision drops `hd_t6`, where both arms lost every call to a 45 s outage, leaving
-  seven: 4.3 [3.2, 5.3] (P, Table V); after 30 s −0.5 VMAF (exploratory); Fig. 4(b) shows one of its calls.
+  seven: 4.3 [3.2, 5.3] (P, Table V); after 30 s −0.5 VMAF (exploratory); Fig. 5(b) shows one of its calls.
 - Registry: hd720-realtrace-ch-v1, realtrace-steady-explore-v1 (exploratory), trace-replay-shaping-diag-v2 (replay
   fidelity, `R/trace_replay_shaping_diag_v2/result.json`).
 - Level 2: the Table V snippet (all 16 cells, as registered); `R/hd720_realtrace_ch_v1/revise_both_invalid.json`
@@ -665,7 +671,7 @@ check("hd720_learned_alone_v1", CH, "arm_schaferct_retrained_d", keep=env0)
 
 ### Section V-F. Low capacities
 
-- Reports: non-inferior to LLM4Band at 100 to 400 kb/s behind the envelope, with 1% loss and with no envelope (Fig. 4(c));
+- Reports: non-inferior to LLM4Band at 100 to 400 kb/s behind the envelope, with 1% loss and with no envelope (Fig. 5(c));
   with no envelope it needs the 5 kb/s floor at 100 kb/s, where every call failed without it; at 200 kb/s 6.0 points behind,
   27% more video, VMAF 48.8 against 41.9, queueing 233 against 98 ms (exploratory); 200 kb/s with 1% loss 5.5 points
   behind (fails); anchor-free policy 31 kb/s of video, 5 of 8 calls broken, 14.8 behind; against GCC with 1% loss −1.4
@@ -804,7 +810,7 @@ closed-loop batches of the main text use v6. Evidence per item:
   `perstep.npz` (one-packet windows of the newest short slot):
   `python3 -c "import numpy as np; F = np.load('experiments/results/arb_perstep_dump_v1/perstep.npz')['feat_short']; one = F[:, 1] == 1; print(np.mean(F[one, 8] == 0), np.median(F[one, 8]))"`
   prints about 0.0036 (0.36%) and 72.0 (ms).
-- Item 11: switch-deploy-collector-v5; Level 1 as in Section III-E.
+- Item 11: switch-deploy-collector-v5; Level 1 as in Section III-D.
 - Item 12: testbed-sender-floor-audio-audit-v1 (about 41 kb/s and 50.8 packets/s, in its data event and verdict text).
 - Level 3: not possible from the package (archived receiver logs and the original collector are not included).
 
@@ -895,7 +901,7 @@ closed-loop batches of the main text use v6. Evidence per item:
   (−0.6 to 1.5) and −0.05, no break in 36 calls; 720p λ = 0.8 −0.4 VMAF (−1.6 to 0.7).
 - Registry: ch-lambda-sweep-v1, anchor-ablation-v1, hcq-rq-range-explore-v1 (exploratory), lowbw-lambda-ch-v2
   (registered repeat), lowbw-lambda-mid-ch-v1, lowbw-lambda-seeds-v1, lowbw-lambda-env6-v1, hd720-lambda-ch-v1.
-- Level 1: `python3 scripts/paper/make_fig_lambda_supp_v2.py` → `papers/revision-v2/supplement/figS_lambda.pdf` (input
+- Level 1: `python3 scripts/paper/make_fig_lambda_supp_v3.py` → `papers/revision-v2/supplement/figS_lambda.pdf` (input
   `R/ch_lambda_sweep_v1/summary.json`).
 - Level 2: offline as in Section V-B; closed loop, checked in a copy of the package (break counts per arm: count
   `valid` false in each `runs.jsonl`; arm keys `l04`, `l08`, `l06`, `l10` and `l00` give λ, with the seed in the key of
@@ -1028,12 +1034,12 @@ batch driver that is not in the package, with an earlier state of the unnumbered
 
 | Run script | Entry point; arm modules of the cited arms | Batch script(s) (`D/`) | Registry id(s) | Paper result(s) |
 |---|---|---|---|---|
-| v10 | v7; `arm_default_schema` = `fixed_schema_x_v1.py` (challenge baseline, envelope v4) | `obsschema_cl2_v1.py`, `testbed_parallel_equiv_v1.py` | obsschema-closedloop-v2 | Table IV (closed loop, challenge baseline downstream), Fig. 3(c) |
+| v10 | v7; `arm_default_schema` = `fixed_schema_x_v1.py` (challenge baseline, envelope v4) | `obsschema_cl2_v1.py`, `testbed_parallel_equiv_v1.py` | obsschema-closedloop-v2 | Table IV (closed loop, challenge baseline downstream), Fig. 4(c) |
 | v11 | v8; adds `arm_llm4bandpp_schema` | not in the package; one calibration job of `compete_flow_ch_eval_v1.py` | obsschema-closedloop-llm4bandpp-v1 | none |
 | v17 | v12; `arm_llm4bandpp_nl_x` (`online_llm_arms_v5.py`), `arm_nl_schema` (`fixed_schema_nl_v1.py`) | `obsschema_rt_nl_v1.py`, `lowbw_nl_vs_conf_v1.py` | obsschema-closedloop-nl-v1, lowbw-nl-vs-conf-v1 | Table IV (multi-scale variant), Section S9 (11.4 points) |
-| v18 | v13; `arm_ch_x` = `online_llm_arms_v6.py` (no floor), `arm_llm4band_conf_x` = `online_llm_arms_v4.py` | `hd720_ch_eval_v1.py`, `compete_flow_ch_eval_v1.py`, `lowbw_ch_vs_conf_v1.py` | hd720-closedloop-ch-v1, hd720-ch-vs-nl-v1, compete-flow-ch-v1, lowbw-ch-vs-conf-v1, lowbw-ch-vs-conf-env6-v1 | Table V (first batch), Fig. 4(a), Fig. 4(c), shared bottleneck, low capacities |
+| v18 | v13; `arm_ch_x` = `online_llm_arms_v6.py` (no floor), `arm_llm4band_conf_x` = `online_llm_arms_v4.py` | `hd720_ch_eval_v1.py`, `compete_flow_ch_eval_v1.py`, `lowbw_ch_vs_conf_v1.py` | hd720-closedloop-ch-v1, hd720-ch-vs-nl-v1, compete-flow-ch-v1, lowbw-ch-vs-conf-v1, lowbw-ch-vs-conf-env6-v1 | Table V (first batch), Fig. 5(a), Fig. 5(c), shared bottleneck, low capacities |
 | v19 | v14; `arm_ch_x` = `online_llm_arms_v7.py` (collector v7, startup guard) | `guard_smoke_v1.py` | ch-startup-guard-smoke-explore-v1 | Section IV (a zero estimate stops the sender) |
-| v20 | v15; `arm_ch_x` = `online_llm_arms_v8.py` (floor), `echo_x` = `echo_x_v2.py` | `lowbw_chf_vs_conf_v1.py`, `hd720_attr_loss_v1.py`, `hd720_realtrace_v1.py`, `floor_smoke_v1.py` | lowbw-chf-vs-conf-v1, hd720-echo-attr-ch-v1, hd720-randloss-ch-v1, hd720-realtrace-ch-v1 | Table V (second batch, cellular, random loss), Fig. 4(b), Fig. 4(c), echo test, low capacities |
+| v20 | v15; `arm_ch_x` = `online_llm_arms_v8.py` (floor), `echo_x` = `echo_x_v2.py` | `lowbw_chf_vs_conf_v1.py`, `hd720_attr_loss_v1.py`, `hd720_realtrace_v1.py`, `floor_smoke_v1.py` | lowbw-chf-vs-conf-v1, hd720-echo-attr-ch-v1, hd720-randloss-ch-v1, hd720-realtrace-ch-v1 | Table V (second batch, cellular, random loss), Fig. 5(b), Fig. 5(c), echo test, low capacities |
 | v21 | v15; installs `ch_s0.pt`, `ch_s2.pt` | `hd720_seeds_v1.py` (check v1) | hd720-seeds-ch-v1 | Table V (seeds 0 and 2) |
 | v22 | v15; patched high-bitrate sender | `hd720_highbw_v1.py` | hd720-highbw-ch-v1 | Table V (high bandwidth), Section V-F |
 | v23 | v15; installs `ch_l08s1.pt` | `hd720_lambda_v1.py` (check v2) | hd720-lambda-ch-v1 | Section V-B (λ), Section S6 |
@@ -1041,5 +1047,5 @@ batch driver that is not in the package, with an earlier state of the unnumbered
 | v25 | v17; `arm_ch_schema` = `fixed_schema_ch_v1.py` | `hd720_designer_ch_v1.py` | hd720-designer-ch-v1 | Table IV (deployed system, 720p), Section V-E |
 | v26 | v17; installs `ch_l10s1.pt`, `ch_l00s1.pt` | `lowbw_lambda_env6_v1.py` (check v5); `lowbw_lambda_ch_v2.py` (check v3) | lowbw-lambda-ch-v2, lowbw-lambda-env6-v1 | Section V-B (λ behind the envelope), Section S6 |
 | v27 | v18; `arm_ch_schema_tel` = `fixed_schema_ch_v2.py` (envelope v4, no shadow GCC) | `hd720_designer_tel_v1.py`, `hd720_designer_tel_v2.py`, `hd720_designer_tel_fid_v1.py` | hd720-designer-tel-v1, hd720-designer-tel-v2, hd720-designer-tel-fid-v1 | Table IV (telemetry only), Section V-E, abstract (1 of 60) |
-| v28 | v17; installs `ch_l06s1.pt` | `lowbw_loss_v1.py`, `lowbw_lambda_mid_v1.py` (check v4) | lowbw-loss200-ch-v1, lowbw-lambda-mid-ch-v1 | Section V-F (5.5 points, −1.4 against GCC), Fig. 4(c), Section S6 |
-| v29 | v17; adds the λ 0 and λ 1.0 checkpoints of seeds 0 and 2 and `ch_a0s2.pt` | `lowbw_lambda_seeds_v1.py`, `lowbw_noanchor200_v1.py` (check v6), `lowbw_loss1_env6_v1.py`, `content320_ch_gcc_v1.py` (check v7) | lowbw-lambda-seeds-v1, lowbw-noanchor-200-v1, lowbw-loss1-env6-v1, content320-ch-gcc-v1 | Table V (320×240), Fig. 4(c), Section V-B (4.7 points), Section V-F (anchor-free, 1% loss), Section S6 |
+| v28 | v17; installs `ch_l06s1.pt` | `lowbw_loss_v1.py`, `lowbw_lambda_mid_v1.py` (check v4) | lowbw-loss200-ch-v1, lowbw-lambda-mid-ch-v1 | Section V-F (5.5 points, −1.4 against GCC), Fig. 5(c), Section S6 |
+| v29 | v17; adds the λ 0 and λ 1.0 checkpoints of seeds 0 and 2 and `ch_a0s2.pt` | `lowbw_lambda_seeds_v1.py`, `lowbw_noanchor200_v1.py` (check v6), `lowbw_loss1_env6_v1.py`, `content320_ch_gcc_v1.py` (check v7) | lowbw-lambda-seeds-v1, lowbw-noanchor-200-v1, lowbw-loss1-env6-v1, content320-ch-gcc-v1 | Table V (320×240), Fig. 5(c), Section V-B (4.7 points), Section V-F (anchor-free, 1% loss), Section S6 |
