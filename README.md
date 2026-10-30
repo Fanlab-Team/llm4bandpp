@@ -14,10 +14,10 @@ C-H is the deployed estimator (conference encoder trained with the HCQ reward, n
 in the testbed, and `llm4bandpp` or "LLM4band++ (Qwen)" in file names is the paper's one-token LLM variant, not the
 deployed system.
 
-<p align="center"><img src="docs/figures/fig_llm_position.png" width="440" alt="Fig. 2: overview of LLM4band++. Offline, the estimator is trained with IQL, the HCQ reward and a capacity anchor; once per client stack an LLM designer writes the telemetry adapter; every 60 ms the estimator runs without an LLM behind a probing envelope">&nbsp;&nbsp;<img src="docs/figures/fig_envelope.png" width="400" alt="Fig. 3: the probing envelope's three states, Clear, Mild and Congested, with their probe rules and who leads the announced rate"></p>
+<p align="center"><img src="docs/figures/fig_llm_position.png" width="680" alt="Fig. 2: overview of LLM4band++. Offline, the estimator is trained with IQL, the HCQ reward and a capacity anchor; once per client stack an LLM designer writes the telemetry adapter; every 60 ms the estimator runs without an LLM behind a probing envelope"></p>
 
-*Left, Fig. 2: overview of LLM4band++. The LLM designer runs once per client stack, and the estimator runs every 60 ms
-without an LLM. Right, Fig. 3: the probing envelope of the deployed system, with its three states.*
+*Fig. 2. Overview of LLM4band++. The LLM designer runs once per client stack, and the estimator runs every 60 ms
+without an LLM.*
 
 ## Results at a glance
 
@@ -47,9 +47,9 @@ every test with its verdict, including those that fell short, and
 *Fig. 5. Closed-loop behavior: (a) VMAF over call time, first 720p batch, (b) one cellular call, (c) utility per
 capacity, mean with 90% interval.*
 
-The figures here are renderings of the paper's PDFs. Figs. 2 and 3 are rebuilt pixel for pixel by
-`reproduce/verify_level1.py`; Figs. 1, 4 and 5 were drawn by a co-author from the data in
-[`figures_and_tables/`](figures_and_tables/), where each folder names its source.
+The figures here are renderings of the paper's PDFs. `reproduce/verify_level1.py` rebuilds Figs. 2 and 3 pixel for
+pixel; Figs. 1, 4 and 5 were drawn by a co-author from the data in [`figures_and_tables/`](figures_and_tables/), where
+each folder names its source.
 
 ## Getting started (about 15 minutes)
 
