@@ -319,7 +319,7 @@ def table_cost():
 # generated tables into the paper's text; the numbers are those computed above and are not touched.
 PAPER_CAPTION = {
     "table_offline.tex": r"\caption{Offline MSE in \textnormal{(Mb/s)$^2$}, lower is better, on 870 validation calls and the 712-call leakage-free subset. Shaded: lowest among offline RL estimators}",
-    "table_position.tex": r"\caption{Two LLM positions and their controls. Per step: change in macro MSE from pre-training against random initialization, 95\% interval. Designer: groups mapped correctly with names vs.\ masked}",
+    "table_position.tex": r"\caption{Two LLM positions and their controls. Per step: change in macro MSE from pre-training against random initialization, 95\% interval. Designer: groups mapped correctly with names vs.\ masked. Shaded: names shown}",
     "table_designer.tex": r"\caption{Main results of the designer. $\Delta$: its advantage over the comparator, with 90\% interval. Dev.: deviation from the true mapping, or from packet-capture inputs in the last row. Shaded: interval above zero}",
     "table_cost.tex": r"\caption{Cost per decision on a laptop (Core i9-13900H, RTX 4080 Laptop GPU). Shaded: below the 40\,ms deadline on the CPU at the 95th percentile}",
     "table_closedloop_v2.tex": r"\caption{Closed-loop VMAF of LLM4band++ minus each reference: mean over cells with 90\% interval}",
