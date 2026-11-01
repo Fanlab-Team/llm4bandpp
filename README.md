@@ -32,6 +32,7 @@ Lower left is better.*
 | It decides in 0.07 ms on a laptop CPU with 0.68 M parameters. An LLM in the per-step path takes 32 to 39 ms per decision (median) and adds no detectable accuracy. | Tables II, III |
 | Asked for units and counting rules, the LLM designer reaches a balanced accuracy of 0.92 on 12 held-out client stacks, against 0.56 for the best non-LLM matcher (Cupid) and 0.72 for the same LLM used as a generic matcher. | Fig. 4(a), Table IV |
 | At 720p the deployed system has higher VMAF than a Python GCC in every batch, by 4.3 to 8.9 on average; most of the lead comes while GCC ramps up, and after 30 s the difference is −0.5 to +2.1 VMAF. | Table V, Fig. 5 |
+| At a native 1920x1080 source the same six capacities give a mean of 8.0 VMAF [6.6, 9.3] over GCC. | Table V |
 
 Where the estimator reads only adapted telemetry, the gains are large but uneven (Section V-E). The registry lists
 every test with its verdict, including those that fell short, and
@@ -42,7 +43,7 @@ every test with its verdict, including those that fell short, and
 *Fig. 4. The designer against conventional matchers (hatched): (a) 12 held-out client stacks, (b) four real programs,
 (c) closed loop on synthetic schemas. Hollow: open models.*
 
-<p align="center"><img src="docs/figures/fig_closedloop_dynamics.png" width="860" alt="Fig. 5: VMAF over call time against the Python GCC, rates in one cellular call, and utility against LLM4Band at 320x240"></p>
+<p align="center"><img src="docs/figures/fig_closedloop_dynamics.png" width="860" alt="Fig. 5: VMAF over call time against GCC, rates in one cellular call, and utility against LLM4Band at 320x240"></p>
 
 *Fig. 5. Closed-loop behavior: (a) VMAF over call time, first 720p batch, (b) one cellular call, (c) utility per
 capacity, mean with 90% interval.*
