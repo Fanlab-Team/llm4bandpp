@@ -37,7 +37,7 @@ def forest(G):
             for a in axs: a.axhspan(gi[k] - 0.5, gi[k + 1] - 0.5, color=S.BAND_BG, lw=0, zorder=0)
     for y, r in enumerate(rows):
         if isinstance(r, tuple):
-            hd = {"Python GCC every 200 ms (VMAF)": "vs. Python GCC", "Learned estimators (VMAF)": "vs. learned estimators"}[r[1]]
+            hd = {"Python GCC every 200 ms (VMAF)": "vs. GCC", "Learned estimators (VMAF)": "vs. learned estimators"}[r[1]]
             lab.text(0.0, y, hd, ha="left", va="center", fontsize=8, fontweight="bold"); continue
         lab.text(0.09 if r["indent"] else 0.0, y, r["label"].replace("320x240", "320×240"), ha="left", va="center", fontsize=8)
         reg = r["st"] != "--"; lo, hi = r["ci"]

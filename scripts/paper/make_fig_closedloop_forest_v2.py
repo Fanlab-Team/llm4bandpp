@@ -16,9 +16,9 @@ MARGIN = -6.0
 TEAL = S.OURS["fc"]; TEAL_REF = "#5f9fa1"; LINE_REF = "#9cc7c8"; MARGIN_C = "#7fb3b5"
 PGF_RC = {"pgf.texsystem": "pdflatex", "pgf.rcfonts": False,
           "pgf.preamble": r"\usepackage[T1]{fontenc}\usepackage{helvet}\renewcommand{\familydefault}{\sfdefault}\usepackage{sansmath}\sansmath"}
-GROUPS = [("vs. Python GCC, 720p", [("720p, first batch", "First batch", False), ("second batch", "Second batch", False), ("seeds 0 and 2", "Seeds 0 and 2", False),
+GROUPS = [("vs. GCC, 720p", [("720p, first batch", "First batch", False), ("second batch", "Second batch", False), ("seeds 0 and 2", "Seeds 0 and 2", False),
                                     ("cellular, 7 windows", "Cellular, 7 windows", False), ("High bandwidth", "High bandwidth", False), ("Random loss", "Random loss", False)]),
-          ("vs. Python GCC, 320$\\times$240", [("320x240 Johnny", "Johnny", False), ("Mobcal", "Mobcal", False), ("Parkrun", "Parkrun", False)]),
+          ("vs. GCC, 320$\\times$240", [("320x240 Johnny", "Johnny", False), ("Mobcal", "Mobcal", False), ("Parkrun", "Parkrun", False)]),
           ("vs. learned estimators, 720p", [("Schaferct-R", "Schaferct-R", False), ("high bandwidth", "high bandwidth", True), ("Supervised MLP", "Supervised MLP", False),
                                             ("Schaferct-R, no envelope", "Schaferct-R, no envelope", False), ("high bandwidth", "high bandwidth", True)])]
 
