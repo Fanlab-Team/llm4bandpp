@@ -1,0 +1,6 @@
+{
+ "ceiling_kbps": {
+  "dinner": 20000.0
+ },
+ "definition": "Patched sender, with libwebrtc's maximum bitrate raised to 20000 kbps. Used only as the denominator of the reported utility; the primary endpoint is VMAF and no separate calibration was run."
+}

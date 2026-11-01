@@ -211,7 +211,8 @@ shadow GCC.
   `rows_v2` of `scripts/paper/make_fig_closedloop_forest_v2.py`. Inputs: the data events,
   `R/closedloop_steady_qoe_v1/summary.json`, `R/closedloop_steady_qoe_v1/realtrace_explore_v1.json`,
   `R/content320_ch_gcc_v1/result_v1.json`, `R/hd720_learned_baselines_v1/result_v1.json`,
-  `R/hd720_learned_alone_v1/result_rejudge_env0.json` and the `runs_full.jsonl` of the GCC batches. The same function
+  `R/hd720_learned_alone_v1/result_rejudge_env0.json` and the `runs_full.jsonl` of the GCC batches. The 1080p group reads `R/hd1080_highbw_ch_v2/result_v1.json` directly; its per-condition rows are in
+  `R/hd1080_highbw_ch_v2/runs_tidy.csv`. The same function
   writes `table_closedloop.tex` (not in the paper), whose after-30-s, SSIM and freeze columns back Section V-F.
 - Rows (all 720p rows: reference `gcc_pt125_c200` or a learned arm; `arm_ch_x` with collector v6 and envelope v6 unless
   noted). "Floor" is `STALENESS_MIN_BPS_FLOOR=1`.
@@ -224,6 +225,7 @@ shadow GCC.
 | Cellular, 7 windows (P) | 4.3 [3.2, 5.3] | hd720-realtrace-ch-v1 (revision: `R/hd720_realtrace_ch_v1/revise_both_invalid.json`) | `hd720_realtrace_v1.py` | v20; entry point v15, floor; none |
 | High bandwidth (R) | 6.6 [5.9, 7.3] | hd720-highbw-ch-v1 | `hd720_highbw_v1.py` | v22; entry point v15, floor, `STALENESS_HIGH_BITRATE=1` for both arms; none |
 | Random loss (R) | 8.9 [7.7, 10.2] | hd720-randloss-ch-v1 | `hd720_attr_loss_v1.py` (`judge-loss`) | v20; entry point v15, floor; none |
+| High bandwidth, 1080p (R) | 8.0 [6.6, 9.3] | hd1080-highbw-ch-v2 | not shipped; the same driver as High bandwidth with a native 1920x1080 source (Xiph dinner) | v31; entry point v15, floor, `STALENESS_HIGH_BITRATE=1` for both arms, 20 Mbit/s cap and a receiver frame writer that rescales frames whose aspect ratio is within 2% of the configured size; none |
 | 320×240 Johnny, Mobcal, Parkrun (–) | −0.2 [−0.5, 0.1]; 1.6 [1.1, 2.1]; 0.9 [0.2, 1.7] | content320-ch-gcc-v1 | `content320_ch_gcc_v1.py` | v29; entry point v17, floor; `seed_weight_check_v7.py` |
 | Schaferct-R (R); Supervised MLP (–) | 0.5 [−0.3, 1.3]; 1.2 [0.3, 2.0] | hd720-learned-baselines-v1 | `hd720_learned_v1.py` | v24; entry point v16; all three arms floor and envelope v6, learned arms `fixed_x_v2.py` with `R/switch_deploy_v1/models/`; none |
 | Schaferct-R, high bandwidth (R), no envelope (D) | 2.3 [1.7, 2.8]; 2.3 [2.0, 2.6] | hd720-hb-learned-env-v1, hd720-hb-learned-alone-v1 | `hd720_hb_learned_v1.py` | v24; entry point v16, floor, high bitrate, envelope v6 or envelope 0; none |

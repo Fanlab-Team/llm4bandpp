@@ -1,0 +1,219 @@
+{
+ "verdict": "holds",
+ "D": 7.980011153586303,
+ "ci90": [
+  6.630336813598793,
+  9.28743722181751
+ ],
+ "cell_diff": {
+  "hb_c3__dinner": 6.119320566213958,
+  "hb_c6__dinner": 7.3376035941113855,
+  "hb_c10__dinner": 7.645585741435383,
+  "hb_c15__dinner": 7.207793533855266,
+  "hb_t1__dinner": 3.7837515347545434,
+  "hb_t2__dinner": 15.78601195114728
+ },
+ "severe_cells": [],
+ "all_invalid_cells": [],
+ "dropped_cells_no_ref": [],
+ "n_cells_used": 6,
+ "safety_hit": false,
+ "superiority_report_only": true,
+ "both_invalid_cells_dropped": [],
+ "by_arm": {
+  "gcc200": {
+   "vmaf": 79.24581509393761,
+   "ssim": 0.9582653658312964,
+   "psnr": 39.09865096568048,
+   "utility": 71.9789326886798,
+   "video_kbps": 3497.511121110829,
+   "loss_rate": 0.002735021045576976,
+   "queue_delay_mean_ms": 102.1741180860084,
+   "file_freeze_per_min": 3.094629954983002,
+   "decoded_fps": 27.20430784603958,
+   "env6_ceiling_frac": null,
+   "env6_capped_frac": null,
+   "envelope_rewrite_frac": null
+  },
+  "ch": {
+   "vmaf": 88.1939464396773,
+   "ssim": 0.9661683754045111,
+   "psnr": 40.29597036503634,
+   "utility": 76.62130602138143,
+   "video_kbps": 4594.690750863228,
+   "loss_rate": 0.028335817389854218,
+   "queue_delay_mean_ms": 94.77411188079405,
+   "file_freeze_per_min": 3.3886160825257954,
+   "decoded_fps": 27.662635382812155,
+   "env6_ceiling_frac": 0.8239977200333812,
+   "env6_capped_frac": 0.6209728434054931,
+   "envelope_rewrite_frac": 0.8873975469008076
+  }
+ },
+ "by_cond": {
+  "gcc200": {
+   "hb_c3": {
+    "vmaf": 82.25799942161716,
+    "utility": 82.74333424833674,
+    "video_kbps": 2160.5044185848833,
+    "loss_rate": 0.001158824873330112,
+    "file_freeze_per_min": 1.120297390213281,
+    "decoded_fps": 29.776269205810156
+   },
+   "hb_c6": {
+    "vmaf": 86.72633196190542,
+    "utility": 78.90525897160146,
+    "video_kbps": 3728.0709519358497,
+    "loss_rate": 0.001946785740285017,
+    "file_freeze_per_min": 0.9602143461781626,
+    "decoded_fps": 29.561987940870175
+   },
+   "hb_c10": {
+    "vmaf": 87.65228941284347,
+    "utility": 75.96643419793236,
+    "video_kbps": 5504.994505786847,
+    "loss_rate": 0.00792376561433276,
+    "file_freeze_per_min": 1.7604751320750156,
+    "decoded_fps": 29.103585956775653
+   },
+   "hb_c15": {
+    "vmaf": 87.18363377404657,
+    "utility": 72.71134777985239,
+    "video_kbps": 7018.057555278719,
+    "loss_rate": 0.0028889973958333335,
+    "file_freeze_per_min": 1.9204921735279417,
+    "decoded_fps": 29.643851664039055
+   },
+   "hb_t1": {
+    "vmaf": 76.67286496344428,
+    "utility": 69.99159545019262,
+    "video_kbps": 1983.2978448074539,
+    "loss_rate": 0.0,
+    "file_freeze_per_min": 0.6401115249390564,
+    "decoded_fps": 29.093111757869377
+   },
+   "hb_t2": {
+    "vmaf": 54.981771029768744,
+    "utility": 51.555625484163265,
+    "video_kbps": 590.1414502712217,
+    "loss_rate": 0.0024917526496806342,
+    "file_freeze_per_min": 12.166189162964555,
+    "decoded_fps": 16.047040550873056
+   }
+  },
+  "ch": {
+   "hb_c3": {
+    "vmaf": 88.37731998783111,
+    "utility": 84.59711832214592,
+    "video_kbps": 2328.2330415828833,
+    "loss_rate": 0.005298128056050121,
+    "file_freeze_per_min": 3.2000599164847197,
+    "decoded_fps": 29.338733558324307
+   },
+   "hb_c6": {
+    "vmaf": 94.0639355560168,
+    "utility": 84.36297222336133,
+    "video_kbps": 4597.953243784635,
+    "loss_rate": 0.0031802214003760357,
+    "file_freeze_per_min": 2.720661058728906,
+    "decoded_fps": 29.538092898607793
+   },
+   "hb_c10": {
+    "vmaf": 95.29787515427886,
+    "utility": 76.58507989246995,
+    "video_kbps": 6429.45118128655,
+    "loss_rate": 0.14693286674662845,
+    "file_freeze_per_min": 4.160257272485483,
+    "decoded_fps": 29.206441033391602
+   },
+   "hb_c15": {
+    "vmaf": 94.39142730790184,
+    "utility": 79.7022682899462,
+    "video_kbps": 9752.227422735332,
+    "loss_rate": 0.004871188108131037,
+    "file_freeze_per_min": 2.0802156864288315,
+    "decoded_fps": 29.18948952084174
+   },
+   "hb_t1": {
+    "vmaf": 80.45661649819883,
+    "utility": 68.40788770659343,
+    "video_kbps": 2040.587577439907,
+    "loss_rate": 0.0002872275646549248,
+    "file_freeze_per_min": 0.8001068982114652,
+    "decoded_fps": 28.3901662838195
+   },
+   "hb_t2": {
+    "vmaf": 70.76778298091602,
+    "utility": 60.798111529966874,
+    "video_kbps": 1332.1926820934702,
+    "loss_rate": 0.0,
+    "file_freeze_per_min": 9.361285452960153,
+    "decoded_fps": 16.63801581142589
+   }
+  }
+ },
+ "n_valid": {
+  "gcc200": 18,
+  "ch": 17
+ },
+ "n_runs": 36,
+ "bad_hash": [],
+ "profiles": {
+  "hb_c3": {
+   "kind": "constant",
+   "kbps": 3000,
+   "queue_packets": 79,
+   "sha256": "96a510952f8cd4f7c15285317edbe0dbbe6cab72a426d61f3992bef96385d59e"
+  },
+  "hb_c6": {
+   "kind": "constant",
+   "kbps": 6000,
+   "queue_packets": 157,
+   "sha256": "5132cc4fddbc278863a055efa60c0cb3c8d7f40fe67045a5dc61ec6bf5dd27e6"
+  },
+  "hb_c10": {
+   "kind": "constant",
+   "kbps": 10000,
+   "queue_packets": 261,
+   "sha256": "8ccbe7a11762693423f9d002dd179e1d3c31a9e7c5e78b17f6f15264214dc4c6"
+  },
+  "hb_c15": {
+   "kind": "constant",
+   "kbps": 15000,
+   "queue_packets": 391,
+   "sha256": "9397063adf57b82907dd2305cdfaec734df233f9c3464db30de6e8895cf8e494"
+  },
+  "hb_t1": {
+   "kind": "real",
+   "trace_id": "ucc_4g/train/A_2018.02.02_11.36.18",
+   "source": "ucc_4g",
+   "env": "train",
+   "start_s": 240,
+   "mean_kbps": 6592.75,
+   "n_valid": 120,
+   "p95_kbps": 14989.999999999998,
+   "queue_packets": 391,
+   "sha256": "eebc9c5f3fba1b536eba309ab22c59973acfcd86dad6c137faecddbb70492abf"
+  },
+  "hb_t2": {
+   "kind": "real",
+   "trace_id": "ucc_4g/bus/B_2018.01.25_17.27.27",
+   "source": "ucc_4g",
+   "env": "bus",
+   "start_s": 360,
+   "mean_kbps": 10548.846153846154,
+   "n_valid": 117,
+   "p95_kbps": 34333.149999999994,
+   "queue_packets": 895,
+   "sha256": "77b20fd36c772f7ec00cc848b2c60734c5a8c098f9f4a2036f1859bbef63cede"
+  }
+ },
+ "ceilings": {
+  "dinner": 20000.0
+ },
+ "invalid_runs": {
+  "arm_ch_x__hb_t2__d0__r3__vdinner": [
+   "runner validity check failed or produced no result"
+  ]
+ }
+}
